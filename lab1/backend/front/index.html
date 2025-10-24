@@ -3,8 +3,151 @@
 <head>
 
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap&subset=cyrillic" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <script src="main.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+            font-family: "Russo One";
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: auto;
+            grid-template-areas:
+                "header"
+                "main"
+                "footer";
+            min-height: 100vh;
+        }
+        header {
+            font-family: cursive;
+            background: linear-gradient(white, blue, red);
+            grid-area: header;
+            display: grid;
+            padding-left: 20px;
+            padding-right: 20px;
+            -webkit-text-stroke: 1px black;
+            -webkit-text-fill-color: white;
+            grid-template-areas: "header-left header-center header-right";
+        }
+
+        #header-left {
+            grid-area: header-left;
+            justify-self: start;
+        }
+
+        #header-center {
+            grid-area: header-center;
+            justify-self: center;
+
+        }
+
+        #header-right {
+            grid-area: header-right;
+            justify-self: end;
+        }
+
+        main {
+            padding-top: 20px;
+            grid-area: main;
+            display: grid;
+            grid-template-areas: "background" "table";
+        }
+        .background {
+            grid-area: background;
+            display: grid;
+            background-image: url("russian_flag_fon.jpeg");
+            background-size: 100% 100%;
+            grid-template-columns: 1fr 1fr ;
+            grid-template-areas: "chart input";
+        }
+        .chart {
+            grid-area: chart;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input {
+            transform: scale(1.8);
+            grid-area: input;
+            align-self: center;
+            justify-self: center;
+        }
+
+        button[onclick] {
+            border-radius: 8px;
+            background: linear-gradient(45deg, #49638c, #4287f5, #24406b);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button[onclick]:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #0c2245, #39AAAA);
+        }
+
+        .table-check {
+            grid-area: table;
+            width: 100%;
+
+            margin-top: 20px;
+
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+            overflow: hidden;
+            font-family: "Russo One";
+            padding-bottom: 0px;
+        }
+
+        .table-check th,
+        .table-check td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table-check th {
+            background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97);
+            color: white;
+            font-size: 85%;
+            letter-spacing: 0.5px;
+        }
+
+        .table-check tr  {
+            background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
+            color: white;
+        }
+        .table-check tr:nth-child(even) {
+            background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
+            color: white;
+        }
+
+        .table-check td:hover {
+            background: #327da8;
+        }
+
+        footer {
+            background: linear-gradient(to bottom right, white, blue, red);
+            grid-area: footer;
+            display: grid;
+            grid-template-areas: ". contacts .";
+            justify-content: center;
+        }
+
+        #contacts {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            grid-area: contacts;
+            display: grid;
+            justify-self: center;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -84,15 +227,16 @@
             <br/>
 
             <span>Параметр R:</span>
-            <label><input type="button" name="radius" onclick="SaveR(1)" value="1"></label>
-            <label><input type="button" name="radius" onclick="SaveR(1.5)" value="1.5"></label>
-            <label><input type="button" name="radius" onclick="SaveR(2)" value="2"></label>
-            <label><input type="button" name="radius" onclick="SaveR(2.5)" value="2.5"></label>
-            <label><input type="button" name="radius" onclick="SaveR(3)" value="3"></label>
+            <label><input type="button" name="radius" onclick="saveR(1)" value="1"></label>
+            <label><input type="button" name="radius" onclick="saveR(1.5)" value="1.5"></label>
+            <label><input type="button" name="radius" onclick="saveR(2)" value="2"></label>
+            <label><input type="button" name="radius" onclick="saveR(2.5)" value="2.5"></label>
+            <label><input type="button" name="radius" onclick="saveR(3)" value="3"></label>
             <br/>
 
         </div>
         <button type="submit" onclick="submitToBackend()"> Отправить </button>
+        <button type="submit" onclick="clearTable()"> сбросить </button>
     </div>
     </div>
     <table class="table-check">

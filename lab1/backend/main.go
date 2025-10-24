@@ -8,6 +8,7 @@ import (
 	"math"
 	"time"
 	"os"
+	"strconv"
 )
 
 
@@ -29,18 +30,14 @@ func main() {
     if len(os.Args) > 1 {
         port = os.Args[1]
     }
-	http.HandleFunc("/fcgi-bin/", fcgHandler)
+	http.HandleFunc("/fcgi-bin/", FcgHandler)
 	http.Handle("/", http.FileServer(http.Dir("front")))
 
 	log.Println("Server running on :" + port)
 	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
 
-func fcgHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+func FcgHandler(w http.ResponseWriter, r *http.Request) {
 
 	currentTime := time.Now()
 
@@ -48,22 +45,39 @@ func fcgHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-
-	if r.Method != "POST" {
-		sendError(w, "Only POST method allowed", http.StatusMethodNotAllowed)
+	if r.Method != "GET" {
+		SendError(w, "Only GET method allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	var data RequestData
-	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		sendError(w, "Invalid JSON: " + err.Error(), http.StatusBadRequest)
-		return
-	}
-	result, err := Point_is_hit(data.X, data.Y, data.R)
+    query := r.URL.Query()
+	radius, err := strconv.ParseFloat(query.Get("r"), 64)
 	if err != nil {
-		sendError(w, err.Error(), http.StatusBadRequest)
+        SendError(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+	x, err := strconv.ParseFloat(query.Get("x"), 64)
+	if err != nil {
+        SendError(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+	y, err := strconv.ParseFloat(query.Get("y"), 64)
+	if err != nil {
+        SendError(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    log.Print(x, y, radius)
+    if  !(y > -3 && y < 3) {
+        SendError(w, "значение y должно быть от -3 до 3", http.StatusBadRequest)
+        return
+    }
+	result, err := PointIsHit(x, y, radius)
+	log.Print("1")
+	if err != nil {
+		SendError(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+    log.Print("2")
     var uptime = time.Now().Sub(currentTime)
 
 	response := ResponseData{
@@ -75,7 +89,7 @@ func fcgHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func Point_is_hit(x, y, r float64) (bool, error) {
+func PointIsHit(x, y, r float64) (bool, error) {
 	result := ((x >= 0) && (x <= (r/2))) && ((y >= 0) && (y <= r))
 	result = result || ((x <= 0 && y >= 0) && (math.Pow(x, 2) + math.Pow(y, 2) <= math.Pow(r, 2)))
 	result = result || ((x >= 0 && y <= 0) && (y >= (x - r)))
@@ -83,7 +97,7 @@ func Point_is_hit(x, y, r float64) (bool, error) {
 	return result, nil
 }
 
-func sendError(w http.ResponseWriter, message string, statusCode int) {
+func SendError(w http.ResponseWriter, message string, statusCode int) {
 	currentTime := time.Now()
 	uptime := "0"
 

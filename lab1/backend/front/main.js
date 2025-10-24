@@ -1,7 +1,6 @@
-"use strict";
 let R = 1;
 
-function SaveR(x) {
+function saveR(x) {
     R = x;
 }
 
@@ -43,6 +42,8 @@ function addTableRow(x, y, r, hit, date, execTime) {
     row.insertCell(3).textContent = hit ? "Попал" : "Не попал";
     row.insertCell(4).textContent = date;
     row.insertCell(5).textContent = execTime + " ns";
+
+    saveTable()
 }
 
 function updateChartLabels(R) {
@@ -78,14 +79,10 @@ async function submitToBackend() {
         return;
     }
 
-    const data = { x, y, R};
+    const prams = new URLSearchParams({ "x": x, "y": y, "r": R});
 
     try {
-        const response = await fetch("/fcgi-bin/app-freebsd", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        });
+        const response = await fetch(`/fcgi-bin/app-freebsd?${prams}`, {method: "GET"});
 
         if (!response.ok) throw new Error(`Ошибка сервера: ${response.status}`);
 
@@ -108,3 +105,56 @@ async function submitToBackend() {
         alert("Произошла ошибка при отправке данных на сервер.");
     }
 }
+
+function saveTable() {
+    const table = document.querySelector(".table-check");
+    const rows = [];
+
+    for (let i = 1; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const rowData = {
+            x: row.cells[0].textContent,
+            y: row.cells[1].textContent,
+            r: row.cells[2].textContent,
+            hit: row.cells[3].textContent === "Попал",
+            date: row.cells[4].textContent,
+            execTime: row.cells[5].textContent.replace(" ns", "")
+        };
+        rows.push(rowData);
+    }
+
+    localStorage.setItem('savedTableRows', JSON.stringify(rows));
+}
+
+function loadTable() {
+    const savedData = localStorage.getItem('savedTableRows');
+    if (savedData) {
+        const rows = JSON.parse(savedData);
+
+        const table = document.querySelector(".table-check");
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+
+        rows.forEach(rowData => {
+            addTableRow(
+                rowData.x,
+                rowData.y,
+                rowData.r,
+                rowData.hit,
+                rowData.date,
+                rowData.execTime
+            );
+        });
+    }
+}
+
+function clearTable() {
+    localStorage.removeItem('savedTableRows');
+    const table = document.querySelector(".table-check");
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+}
+
+document.addEventListener('DOMContentLoaded', loadTable);

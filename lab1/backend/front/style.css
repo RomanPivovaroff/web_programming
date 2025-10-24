@@ -71,7 +71,7 @@ main {
     justify-self: center;
 }
 
-.input button {
+button[onclick] {
     border-radius: 8px;
     background: linear-gradient(45deg, #49638c, #4287f5, #24406b);
     color: white;
@@ -79,7 +79,7 @@ main {
     transition: 0.3s ease;
 }
 
-.input button:hover {
+button[onclick]:hover {
     transform: scale(1.05);
     background: linear-gradient(90deg, #0c2245, #39AAAA);
 }
