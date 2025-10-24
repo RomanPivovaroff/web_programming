@@ -66,18 +66,15 @@ func FcgHandler(w http.ResponseWriter, r *http.Request) {
         SendError(w, err.Error(), http.StatusBadRequest)
         return
     }
-    log.Print(x, y, radius)
     if  !(y > -3 && y < 3) {
         SendError(w, "значение y должно быть от -3 до 3", http.StatusBadRequest)
         return
     }
 	result, err := PointIsHit(x, y, radius)
-	log.Print("1")
 	if err != nil {
 		SendError(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-    log.Print("2")
     var uptime = time.Now().Sub(currentTime)
 
 	response := ResponseData{
