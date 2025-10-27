@@ -88,7 +88,7 @@ func FcgHandler(w http.ResponseWriter, r *http.Request) {
 
 func PointIsHit(x, y, r float64) (bool, error) {
 	result := ((x >= 0) && (x <= (r/2))) && ((y >= 0) && (y <= r))
-	result = result || ((x <= 0 && y >= 0) && (math.Pow(x, 2) + math.Pow(y, 2) <= math.Pow(r, 2)))
+	result = result || ((x <= 0 && y >= 0) && (math.Pow(x, 2) + math.Pow(y, 2) <= math.Pow(r/2, 2)))
 	result = result || ((x >= 0 && y <= 0) && (y >= (x - r)))
 
 	return result, nil
