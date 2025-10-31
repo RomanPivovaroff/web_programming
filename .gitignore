@@ -1,4 +1,5 @@
 .idea
+app-freebsd
 *.elf
 **/build/
 !src/**/build/
