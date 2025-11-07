@@ -1,5 +1,7 @@
 .idea
 app-freebsd
 *.elf
+go.mod
+go.sum
 **/build/
 !src/**/build/

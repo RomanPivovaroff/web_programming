@@ -126,35 +126,60 @@ function saveTable() {
     localStorage.setItem('savedTableRows', JSON.stringify(rows));
 }
 
-function loadTable() {
-    const savedData = localStorage.getItem('savedTableRows');
-    if (savedData) {
-        const rows = JSON.parse(savedData);
+async function loadTable() {
+    let rows = [];
+    try {
+        const response = await fetch('/points/get');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const points = await response.json();
+        rows = points;
+    } catch (err) {
+        console.error('Ошибка при загрузке точек:', err);
+    }
+    if (rows) {
 
         const table = document.querySelector(".table-check");
         while (table.rows.length > 1) {
             table.deleteRow(1);
         }
-
         rows.forEach(rowData => {
             addTableRow(
-                rowData.x,
-                rowData.y,
-                rowData.r,
-                rowData.hit,
-                rowData.date,
-                rowData.execTime
+                rowData.X,
+                rowData.Y,
+                rowData.R,
+                rowData.Hit,
+                rowData.Date,
+                rowData.ProgramWorkTime
             );
         });
     }
 }
 
-function clearTable() {
-    localStorage.removeItem('savedTableRows');
-    const table = document.querySelector(".table-check");
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
+async function clearTable() {
+    try {
+        const response = await fetch('points/clear');
+
+        if (!response.ok) {
+          console.log(`Ошибка сервера! Статус: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.Result) {
+          console.log("Ошибка при очистке: " + data.Error);
+        }
+        localStorage.removeItem('savedTableRows');
+        const table = document.querySelector(".table-check");
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+        alert("Таблица очищена");
+      } catch (err) {
+        console.error('Ошибка при очистке точек:', err);
+        alert("Ошибка при очистке точек");
+      }
 }
 
 document.addEventListener('DOMContentLoaded', loadTable);
