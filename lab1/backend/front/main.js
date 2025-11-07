@@ -42,8 +42,6 @@ function addTableRow(x, y, r, hit, date, execTime) {
     row.insertCell(3).textContent = hit ? "Попал" : "Не попал";
     row.insertCell(4).textContent = date;
     row.insertCell(5).textContent = execTime + " ns";
-
-    saveTable()
 }
 
 function updateChartLabels(R) {
@@ -106,26 +104,6 @@ async function submitToBackend() {
     }
 }
 
-function saveTable() {
-    const table = document.querySelector(".table-check");
-    const rows = [];
-
-    for (let i = 1; i < table.rows.length; i++) {
-        const row = table.rows[i];
-        const rowData = {
-            x: row.cells[0].textContent,
-            y: row.cells[1].textContent,
-            r: row.cells[2].textContent,
-            hit: row.cells[3].textContent === "Попал",
-            date: row.cells[4].textContent,
-            execTime: row.cells[5].textContent.replace(" ns", "")
-        };
-        rows.push(rowData);
-    }
-
-    localStorage.setItem('savedTableRows', JSON.stringify(rows));
-}
-
 async function loadTable() {
     let rows = [];
     try {
@@ -170,7 +148,6 @@ async function clearTable() {
         if (!data.Result) {
           console.log("Ошибка при очистке: " + data.Error);
         }
-        localStorage.removeItem('savedTableRows');
         const table = document.querySelector(".table-check");
         while (table.rows.length > 1) {
             table.deleteRow(1);
