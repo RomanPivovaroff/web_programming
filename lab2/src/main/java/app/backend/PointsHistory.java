@@ -15,7 +15,6 @@ public class PointsHistory {
         return history;
     }
     public static void clearPointsHistory(HttpSession session) {
-        List<AreaCheckResponse> history = new ArrayList<>();
-        session.setAttribute("history", history);
+        session.removeAttribute("history");
     }
 }

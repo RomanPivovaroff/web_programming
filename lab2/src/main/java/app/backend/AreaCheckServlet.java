@@ -44,17 +44,16 @@ public class AreaCheckServlet extends HttpServlet {
             int x = Integer.parseInt(req.getParameter("x"));
             double y = Double.parseDouble(req.getParameter("y"));
             double r = Double.parseDouble(req.getParameter("r"));
+
             if (!validate(x, y, r)) {
                 throw new InvalidPointDataException("Один из элементов задан неккоректно");
             }
+
             boolean hit = checkHit(x, y, r);
 
-            AreaCheckResponse response = new AreaCheckResponse();
-            response.setX(x);
-            response.setY(y);
-            response.setR(r);
-            response.setHit(hit);
+            AreaCheckResponse response = new AreaCheckResponse(x, y, r, hit);
             logger.info("AreaCheckServlet: response: " + response.toString());
+
             List<AreaCheckResponse> responses = PointsHistory.getPointsHistory(req.getSession());
             responses.add(response);
             req.setAttribute("result", response);
@@ -62,8 +61,6 @@ public class AreaCheckServlet extends HttpServlet {
             req.getRequestDispatcher("/result.jsp").forward(req, resp);
         } catch (NumberFormatException | InvalidPointDataException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Один из элементов задан неккоректно");
-        } catch (NullPointerException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "один из элементов не обнаружен");
         }
     }
 }
