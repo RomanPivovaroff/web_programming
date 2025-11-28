@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
+
+    <!-- Проверка на наличие табов -->
+    <module name="FileTabCharacter"/>
+
+    <!-- Максимальная длина строки -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+        <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+    </module>
+
+    <!-- Проверка правильности оформления файлов (новая строка в конце) -->
+    <module name="NewlineAtEndOfFile"/>
+
+    <module name="TreeWalker">
+        <!-- Импорты -->
+        <module name="AvoidStarImport"/>
+        <module name="IllegalImport"/> <!-- запрещает sun.* -->
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+
+        <!-- Имена -->
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>          <!-- поля: lowerCamelCase -->
+        <module name="MethodName"/>          <!-- методы: lowerCamelCase -->
+        <module name="PackageName"/>         <!-- пакеты: lowercase -->
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>            <!-- классы: UpperCamelCase -->
+
+        <!-- Блоки -->
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+        </module>
+        <module name="LeftCurly"/>
+        <module name="RightCurly"/>
+        <module name="NeedBraces"/>          <!-- всегда требовать {} -->
+
+        <!-- Пробелы и отступы -->
+        <module name="GenericWhitespace"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+
+        <!-- Прочее -->
+        <module name="ArrayTypeStyle"/>      <!-- int[] arr, а не int arr[] -->
+        <module name="MissingSwitchDefault"/>
+        <module name="FallThrough"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="UncommentedMain"/>     <!-- предупреждение, если есть main вне тестов -->
+        <module name="UpperEll"/>            <!-- long x = 100L, а не 100l -->
+
+    </module>
+</module>
