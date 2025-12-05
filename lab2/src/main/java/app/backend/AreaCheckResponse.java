@@ -1,43 +1,54 @@
 package app.backend;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AreaCheckResponse {
-    private int x;
-    private double y;
-    private double r;
+    private BigDecimal x;
+    private BigDecimal y;
+    private BigDecimal r;
     private boolean hit;
-    private LocalDate date = LocalDate.now();
+    long duration;
+    private LocalDateTime date = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
 
-    public AreaCheckResponse(int x, double y, double r, boolean hit) {
+    public AreaCheckResponse(BigDecimal x, BigDecimal y, BigDecimal r, boolean hit, long duration) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.hit = hit;
+        this.duration = duration;
     }
 
+    public long getDuration() {
+        return duration;
+    }
 
-    public int getX() {
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public BigDecimal getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(BigDecimal x) {
         this.x = x;
     }
 
-    public double getY() {
+    public BigDecimal getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(BigDecimal y) {
         this.y = y;
     }
 
-    public double getR() {
+    public BigDecimal getR() {
         return r;
     }
 
-    public void setR(double r) {
+    public void setR(BigDecimal r) {
         this.r = r;
     }
 
@@ -49,11 +60,11 @@ public class AreaCheckResponse {
         this.hit = hit;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

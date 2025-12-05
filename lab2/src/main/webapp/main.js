@@ -64,16 +64,16 @@ function handleCanvasClick(event) {
     const scale = 250 / r;
     console.log(centerX, centerY)
 
-    const realX = Math.round((x - centerX) / scale);
-    const realY = -((y - centerY) / scale).toFixed(2);
-    const form = document.forms["InputCordsFrom"];
-    form["x"].value = realX
-    form["y"].value = realY;
-    createPoint(realX, realY, r, "blue")
-    if (validateInput(realX, realY, r)) {
-        form.submit();
-    }
+    const realX = (x - centerX) / scale;
+    const realY = -((y - centerY) / scale);
+     if (validateInput(realX, realY, r)) {
+        const url = new URL('/lab-2/web2', window.location.origin);
+        url.searchParams.set('x', realX);
+        url.searchParams.set('y', realY);
+        url.searchParams.set('r', r);
 
+        window.location.href = url.toString();
+      }
 }
 
 function updateChartLabels(R) {
@@ -88,17 +88,10 @@ function updateChartLabels(R) {
     document.getElementById('r-full-neg-y').textContent = (-R).toString();
 }
 
-function drawChart() {
-    const r = getR();
-    if (!r) {
-        alert("Сначала выберите радиус R");
-        return;
-    }
-    if (!validateInput(0, 0, r)) {return;};
-    updateChartLabels(r)
-}
-
 function createPoint(x, y, r, color) {
+    if (r != getR()) {
+        return;
+    };
     const svg = document.getElementById("canvas");
     const scale = 250 / r;
     const cx = 300 + x * scale;

@@ -38,17 +38,17 @@
             <line stroke="black" x1="290" x2="310" y1="425" y2="425"></line>
             <line stroke="black" x1="290" x2="310" y1="550" y2="550"></line>
 
-            <text id = "r-half-x" x="420" y="280">R/2</text>
-            <text id = "r-full-x" x="545" y="280">R</text>
+            <text id = "r-half-x" x="420" y="280">2</text>
+            <text id = "r-full-x" x="545" y="280">4</text>
 
-            <text id = "r-half-neg-x" x="164" y="280">-R/2</text>
-            <text id = "r-full-neg-x" x="60" y="280">-R</text>
+            <text id = "r-half-neg-x" x="164" y="280">-2</text>
+            <text id = "r-full-neg-x" x="60" y="280">-4</text>
 
-            <text id = "r-half-y" x="320" y="180">R/2</text>
-            <text id = "r-full-y" x="320" y="55">R</text>
+            <text id = "r-half-y" x="320" y="180">2</text>
+            <text id = "r-full-y" x="320" y="55">4</text>
 
-            <text id = "r-half-neg-y" x="320" y="430">-R/2</text>
-            <text id = "r-full-neg-y" x="320" y="555">-R</text>
+            <text id = "r-half-neg-y" x="320" y="430">-2</text>
+            <text id = "r-full-neg-y" x="320" y="555">-4</text>
 
             <text x="570" y="280">X</text>
             <text x="320" y="30">Y</text>
@@ -106,17 +106,19 @@
             <th scope="col">Y</th>
             <th scope="col">R</th>
             <th scope="col">Попадание</th>
+            <th scope="col">Время работы</th>
             <th scope="col">Дата</th>
         </tr>
         <% for (app.backend.AreaCheckResponse res : history) { %>
         <script>
-            createPoint(<%= res.getX() %>, <%= res.getY() %>, 4, "green")
+            createPoint(<%= res.getX() %>, <%= res.getY() %>, 4, <%= res.getHit() %>  ? "green": "red")
         </script>
         <tr>
             <td><%= res.getX() %></td>
             <td><%= res.getY() %></td>
             <td><%= res.getR() %></td>
             <td><%= res.getHit() ? "попадание" : "промах" %></td>
+            <td><%= res.getDuration() + " ns" %></td>
             <td><%= res.getDate()%></td>
         </tr>
         <% } %>
@@ -124,7 +126,6 @@
         <% } else { %>
         <p>Пока нет результатов.</p>
         <% } %>
-
 </main>
 <footer>
     <div id="contacts">

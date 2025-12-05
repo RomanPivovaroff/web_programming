@@ -1,130 +1,153 @@
 * {
-    box-sizing: border-box;
-    }
+box-sizing: border-box;
+}
 
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
 
-    body {
-        font-family: "Russo One";
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh
-    }
+body {
+    font-family: "Russo One";
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh
+}
 
-    header {
-        font-family: "Open Sans", cursive;
-        background: linear-gradient(white, blue, red);
-        padding: 15px 20px;
-        -webkit-text-stroke: 1px black;
-        -webkit-text-fill-color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+header {
+    font-family: "Open Sans", cursive;
+    background: linear-gradient(white, blue, red);
+    padding: 15px 20px;
+    -webkit-text-stroke: 1px black;
+    -webkit-text-fill-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    #header-left {
-        text-align: left;
-    }
+#header-left {
+    text-align: left;
+}
 
-    #header-center {
-        text-align: center;
-    }
+#header-center {
+    text-align: center;
+}
 
-    #header-right {
-        text-align: right;
-    }
+#header-right {
+    text-align: right;
+}
 
-    main {
-        padding-top: 20px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
+main {
+    padding-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
 
-    .background {
-        background-image: url("russian_flag_fon.jpeg");
-        background-size: 100% 100%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        padding: 40px 0;
-        flex: 1;
-    }
+.background {
+    background-image: url("russian_flag_fon.jpeg");
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px 0;
+    flex: 1;
+}
 
-    .chart {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+.chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    .input {
-        transform: scale(1.8);
-    }
+.input {
+    transform: scale(1.8);
+}
 
-    button[type="submit"] {
-        border-radius: 8px;
-        background: linear-gradient(45deg, #49638c, #4287f5, #24406b);
-        color: white;
-        cursor: pointer;
-        transition: 0.3s ease;
-    }
+button[type="submit"] {
+    border-radius: 8px;
+    background: linear-gradient(45deg, #49638c, #4287f5, #24406b);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
 
-    button[type="submit"]:hover {
-        transform: scale(1.05);
-        background: linear-gradient(90deg, #0c2245, #39AAAA);
-    }
+button[type="submit"]:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0c2245, #39AAAA);
+}
 
-    .table-check {
-        width: 100%;
-        margin-top: 20px;
-        background: white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        overflow: hidden;
-        font-family: "Russo One";
-        padding-bottom: 0px;
-    }
+.table-check {
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+    font-family: "Russo One";
+    padding-bottom: 0px;
+}
 
-    .table-check th,
-    .table-check td {
-        padding: 12px 16px;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
+.table-check th,
+.table-check td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
 
-    .table-check th {
-        background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97);
-        color: white;
-        font-size: 85%;
-        letter-spacing: 0.5px;
-    }
+.table-check th {
+    background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97);
+    color: white;
+    font-size: 85%;
+    letter-spacing: 0.5px;
+}
 
-    .table-check tr  {
-        background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
-        color: white;
-    }
+.table-check tr  {
+    background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
+    color: white;
+}
 
-    .table-check tr:nth-child(even) {
-        background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
-        color: white;
-    }
+.table-check tr:nth-child(even) {
+    background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
+    color: white;
+}
 
-    .table-check td:hover {
-        background: #327da8;
-    }
+.table-check td:hover {
+    background: #327da8;
+}
 
-    footer {
-        background: linear-gradient(to bottom right, white, blue, red);
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+footer {
+    background: linear-gradient(to bottom right, white, blue, red);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    #contacts {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+#contacts {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+a#back {
+    display: block;
+    text-align: center;
+    margin-top: 40px;
+    font: 54px sans-serif;
+    color: #555;
+    text-decoration: none;
+}
+a#back:hover {
+    color: #000;
+}
+
+.backgroundResult {
+    background-image: url("russian_flag_fon.jpeg");
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 0;
+    flex: 1;
+}

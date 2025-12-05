@@ -5,156 +5,32 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap&subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300..800&display=swap" rel="stylesheet">
-    <style rel="stylesheet">
-        * {
-            box-sizing: border-box;
+    <link href="style.css" rel="stylesheet">
+     <script>
+            function updateChartLabels(R) {
+                document.getElementById('r-half-x').textContent = (R/2).toFixed(3);
+                document.getElementById('r-full-x').textContent = R.toString();
+                document.getElementById('r-full-neg-x').textContent = (-R).toString();
+                document.getElementById('r-half-neg-x').textContent = (-R/2).toFixed(3);
+                document.getElementById('r-half-y').textContent = (R/2).toFixed(3);
+                document.getElementById('r-full-y').textContent = R.toString();
+                document.getElementById('r-half-neg-y').textContent = (-R/2).toFixed(3);
+                document.getElementById('r-full-neg-y').textContent = (-R).toString();
             }
-
-            html, body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
+            function createPoint(x, y, r, color) {
+                const svg = document.getElementById("canvas");
+                const scale = 250 / r;
+                const cx = 300 + x * scale;
+                const cy = 300 - y * scale;
+                const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                point.setAttribute("cx", cx);
+                point.setAttribute("cy", cy);
+                point.setAttribute("r", "8");
+                point.setAttribute("fill", color);
+                point.setAttribute("stroke", "white");
+                svg.appendChild(point);
             }
-
-            body {
-                font-family: "Russo One";
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh
-            }
-
-            header {
-                font-family: "Open Sans", cursive;
-                background: linear-gradient(white, blue, red);
-                padding: 15px 20px;
-                -webkit-text-stroke: 1px black;
-                -webkit-text-fill-color: white;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            #header-left {
-                text-align: left;
-            }
-
-            #header-center {
-                text-align: center;
-            }
-
-            #header-right {
-                text-align: right;
-            }
-
-            main {
-                padding-top: 20px;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .background {
-                background-image: url("russian_flag_fon.jpeg");
-                background-size: 100% 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                padding: 40px 0;
-                flex: 1;
-            }
-
-            .table-check {
-                width: 100%;
-                margin-top: 20px;
-                background: white;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                overflow: hidden;
-                font-family: "Russo One";
-                padding-bottom: 0px;
-            }
-
-            .table-check th,
-            .table-check td {
-                padding: 12px 16px;
-                text-align: center;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .table-check th {
-                background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97);
-                color: white;
-                font-size: 85%;
-                letter-spacing: 0.5px;
-            }
-
-            .table-check tr  {
-                background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
-                color: white;
-            }
-
-            .table-check tr:nth-child(even) {
-                background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
-                color: white;
-            }
-
-            .table-check td:hover {
-                background: #327da8;
-            }
-
-            footer {
-                background: linear-gradient(to bottom right, white, blue, red);
-                padding: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            #contacts {
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-            a#back {
-                display: block;
-                text-align: center;
-                margin-top: 40px;
-                font: 54px sans-serif;
-                color: #555;
-                text-decoration: none;
-            }
-            a#back:hover {
-                color: #000;
-            }
-    </style>
-    <script>
-        function updateChartLabels(R) {
-            document.getElementById('r-half-x').textContent = (R/2).toFixed(3);
-            document.getElementById('r-full-x').textContent = R.toString();
-            document.getElementById('r-full-neg-x').textContent = (-R).toString();
-            document.getElementById('r-half-neg-x').textContent = (-R/2).toFixed(3);
-
-            document.getElementById('r-half-y').textContent = (R/2).toFixed(3);
-            document.getElementById('r-full-y').textContent = R.toString();
-            document.getElementById('r-half-neg-y').textContent = (-R/2).toFixed(3);
-            document.getElementById('r-full-neg-y').textContent = (-R).toString();
-        }
-
-        function createPoint(x, y, r, color) {
-            const svg = document.getElementById("canvas");
-            const scale = 250 / r;
-            const cx = 300 + x * scale;
-            const cy = 300 - y * scale;
-
-            const point = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            point.setAttribute("cx", cx);
-            point.setAttribute("cy", cy);
-            point.setAttribute("r", "8");
-            point.setAttribute("fill", color);
-            point.setAttribute("stroke", "white");
-
-            svg.appendChild(point);
-        }
-    </script>
+        </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -165,10 +41,10 @@
     <h2 id="header-right">Пивоваров Роман Николаевич P3231</h2>
 </header>
 <main>
-    <div class="background">
+    <div class="backgroundResult">
         <%
-                        app.backend.AreaCheckResponse result = (app.backend.AreaCheckResponse) request.getAttribute("result");
-                        if (result != null) {
+        app.backend.AreaCheckResponse result = (app.backend.AreaCheckResponse) request.getAttribute("result");
+        if (result != null) {
         %>
         <h1 color="red">ТЫ - <%= (!result.getHit()) ? "НЕ " : "" %>ПОПАЛ!<h1>
         <div class="chart">
@@ -219,29 +95,23 @@
         updateChartLabels(<%=result.getR()%>)
         createPoint(<%=result.getX()%>, <%=result.getY()%>, <%=result.getR()%>, "blue")
     </script>
-    <% } %>
-    <%
-        java.util.List<app.backend.AreaCheckResponse> history =
-                (java.util.List<app.backend.AreaCheckResponse>) session.getAttribute("history");
-        if (history != null && !history.isEmpty()) {
-    %>
     <table class="table-check">
         <tr class="table-header">
             <th scope="col">X</th>
             <th scope="col">Y</th>
             <th scope="col">R</th>
             <th scope="col">Попадание</th>
+            <th scope="col">Время работы</th>
             <th scope="col">Дата</th>
         </tr>
-        <% for (app.backend.AreaCheckResponse res : history) { %>
         <tr>
-            <td><%= res.getX() %></td>
-            <td><%= res.getY() %></td>
-            <td><%= res.getR() %></td>
-            <td><%= res.getHit() ? "попадание" : "промах" %></td>
-            <td><%= res.getDate()%></td>
+            <td><%= result.getX() %></td>
+            <td><%= result.getY() %></td>
+            <td><%= result.getR() %></td>
+            <td><%= result.getHit() ? "попадание" : "промах" %></td>
+            <td><%= result.getDuration() + " ns" %></td>
+            <td><%= result.getDate()%></td>
         </tr>
-        <% } %>
         </table>
         <% } else { %>
         <p>История пуста...</p>
