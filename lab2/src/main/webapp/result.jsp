@@ -46,7 +46,7 @@
         app.backend.AreaCheckResponse result = (app.backend.AreaCheckResponse) request.getAttribute("result");
         if (result != null) {
         %>
-        <h1 color="red">ТЫ - <%= (!result.getHit()) ? "НЕ " : "" %>ПОПАЛ!<h1>
+        <h1 color="red">ТЫ - <%= (!result.hit()) ? "НЕ " : "" %>ПОПАЛ!<h1>
         <div class="chart">
             <svg id="canvas" height="600" width="600" xmlns="http://www.w3.org/2000/svg" onclick="handleCanvasClick(event)">
 
@@ -92,8 +92,8 @@
             </svg>
         </div>
     <script>
-        updateChartLabels(<%=result.getR()%>)
-        createPoint(<%=result.getX()%>, <%=result.getY()%>, <%=result.getR()%>, "blue")
+        updateChartLabels(<%=result.r()%>)
+        createPoint(<%=result.x()%>, <%=result.y()%>, <%=result.r()%>, "blue")
     </script>
     <table class="table-check">
         <tr class="table-header">
@@ -105,12 +105,12 @@
             <th scope="col">Дата</th>
         </tr>
         <tr>
-            <td><%= result.getX() %></td>
-            <td><%= result.getY() %></td>
-            <td><%= result.getR() %></td>
-            <td><%= result.getHit() ? "попадание" : "промах" %></td>
-            <td><%= result.getDuration() + " ns" %></td>
-            <td><%= result.getDate()%></td>
+            <td><%= result.x() %></td>
+            <td><%= result.y() %></td>
+            <td><%= result.r() %></td>
+            <td><%= result.hit() ? "попадание" : "промах" %></td>
+            <td><%= result.duration() + " ns" %></td>
+            <td><%= result.date()%></td>
         </tr>
         </table>
         <% } else { %>

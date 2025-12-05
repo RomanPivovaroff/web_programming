@@ -26,7 +26,6 @@ public class ControllerServlet extends HttpServlet {
         if (x == null || y == null || r == null || x.isBlank() || y.isBlank() || r.isBlank()) {
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } else {
-            req.getSession().setAttribute("controllerAccess", true);
             req.getRequestDispatcher("/areaCheck").forward(req, resp);
         }
 

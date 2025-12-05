@@ -111,15 +111,15 @@
         </tr>
         <% for (app.backend.AreaCheckResponse res : history) { %>
         <script>
-            createPoint(<%= res.getX() %>, <%= res.getY() %>, 4, <%= res.getHit() %>  ? "green": "red")
+            createPoint(<%= res.x() %>, <%= res.y() %>, 4, <%= res.hit() %>  ? "green": "red")
         </script>
         <tr>
-            <td><%= res.getX() %></td>
-            <td><%= res.getY() %></td>
-            <td><%= res.getR() %></td>
-            <td><%= res.getHit() ? "попадание" : "промах" %></td>
-            <td><%= res.getDuration() + " ns" %></td>
-            <td><%= res.getDate()%></td>
+            <td><%= res.x() %></td>
+            <td><%= res.y() %></td>
+            <td><%= res.r() %></td>
+            <td><%= res.hit() ? "попадание" : "промах" %></td>
+            <td><%= res.duration() + " ns" %></td>
+            <td><%= res.date()%></td>
         </tr>
         <% } %>
         </table>

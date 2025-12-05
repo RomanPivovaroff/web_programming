@@ -18,12 +18,6 @@ public class AreaCheckServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Boolean controllerAccess = (Boolean) req.getSession().getAttribute("controllerAccess");
-        if (controllerAccess == null || !controllerAccess) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "сервлет принимает запросы только от контроллера");
-            return;
-        }
-
         try {
             AreaCheckResponse response = PointLogic.parseReq(req);
             logger.info("AreaCheckServlet: response: " + response);

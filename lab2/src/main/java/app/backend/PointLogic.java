@@ -38,14 +38,27 @@ public class PointLogic {
                 y.compareTo(new BigDecimal("-3")) > 0 && y.compareTo(new BigDecimal("3")) < 0;
     }
 
-    static AreaCheckResponse parseReq(HttpServletRequest req) throws InvalidPointDataException {
+    private static boolean validateCanvas(BigDecimal x, BigDecimal y, BigDecimal r) {
+        return x.compareTo(new BigDecimal("-4")) >= 0 && x.compareTo(new BigDecimal("4")) <= 0 &&
+                r.compareTo(new BigDecimal("1")) >= 0 && r.compareTo(new BigDecimal("4")) <= 0 &&
+                y.compareTo(new BigDecimal("-4")) > 0 && y.compareTo(new BigDecimal("4")) < 0;
+    }
+
+    public static AreaCheckResponse parseReq(HttpServletRequest req) throws InvalidPointDataException {
         long startTime = System.nanoTime();
         BigDecimal x = new BigDecimal(req.getParameter("x"));
         BigDecimal y = new BigDecimal(req.getParameter("y"));
         BigDecimal r = new BigDecimal(req.getParameter("r"));
-
-        if (!validate(x, y, r)) {
-            throw new InvalidPointDataException("Один из элементов задан неккоректно");
+        boolean isCanvas = Boolean.parseBoolean(req.getParameter("isCanvas"));
+        if (isCanvas) {
+            if (!validateCanvas(x, y, r)) {
+                throw new InvalidPointDataException("Один из элементов задан неккоректно");
+            }
+        }
+        else {
+            if (!validate(x, y, r)) {
+                throw new InvalidPointDataException("Один из элементов задан неккоректно");
+            }
         }
         boolean hit = checkHit(x, y, r);
         long endTime = System.nanoTime();

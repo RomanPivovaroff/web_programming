@@ -26,10 +26,6 @@ function validateUserInput() {
     const x = getX();
     const y = getY();
     const r = getR();
-    return validateInput(x, y, r);
-}
-
-function validateInput(x, y, r) {
     if  (x == null) {
         alert("X должен быть целым числом от -4 до 4");
         return false;
@@ -45,6 +41,22 @@ function validateInput(x, y, r) {
     return true;
 }
 
+function validateInput(x, y, r) {
+    if  (x == null || x <= -4 || x >= 4) {
+        alert("X должен быть числом от -4 до 4");
+        return false;
+    }
+    if (y == null || y <= -4 || y >= 4) {
+        alert("Y должен быть числом от -4 до 4");
+        return false;
+    }
+    if (r == null || r < 1 || r > 4) {
+        alert("R должен быть числом от 1 до 4");
+        return false;
+    }
+    return true;
+}
+
 function handleCanvasClick(event) {
     const r = getR();
     if (!r) {
@@ -52,17 +64,14 @@ function handleCanvasClick(event) {
         return;
     }
     if (!validateInput(0, 0, r)) {return;};
-    updateChartLabels(r);
     const canvas = document.getElementById("canvas");
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    console.log(x, y)
 
     const centerX = canvas.width.baseVal.value / 2;
     const centerY = canvas.height.baseVal.value / 2;
     const scale = 250 / r;
-    console.log(centerX, centerY)
 
     const realX = (x - centerX) / scale;
     const realY = -((y - centerY) / scale);
@@ -71,6 +80,7 @@ function handleCanvasClick(event) {
         url.searchParams.set('x', realX);
         url.searchParams.set('y', realY);
         url.searchParams.set('r', r);
+        url.searchParams.append('isCanvas', true);
 
         window.location.href = url.toString();
       }
