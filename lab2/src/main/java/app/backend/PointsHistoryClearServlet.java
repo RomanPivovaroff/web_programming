@@ -18,6 +18,7 @@ public class PointsHistoryClearServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         PointsHistory.clearPointsHistory(req.getSession());
         try {
+            logger.info("HttpServletRequest: " + "история сброшена");
             resp.sendRedirect(req.getContextPath() + "/result.jsp");
         } catch (IOException e) {
             throw new RuntimeException(e);
