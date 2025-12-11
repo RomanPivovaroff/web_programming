@@ -85,7 +85,7 @@
                 <br/>
 
                 <span>Параметр R:</span>
-                <input value="4" type="text" name="r" id="r" onchange="drawChart()">
+                <input value="4" type="text" name="r" id="r" onchange="reDrawChart()">
                 <br/>
                 <button type="submit">отправить</button>
             </form>
@@ -111,7 +111,7 @@
         </tr>
         <% for (app.backend.AreaCheckResponse res : history) { %>
         <script>
-            createPoint(<%= res.x() %>, <%= res.y() %>, 4, <%= res.hit() %>  ? "green": "red")
+            createPoint(<%= res.x() %>, <%= res.y() %>, <%= res.r() %>, <%= res.hit() %>  ? "green": "red")
         </script>
         <tr>
             <td><%= res.x() %></td>
