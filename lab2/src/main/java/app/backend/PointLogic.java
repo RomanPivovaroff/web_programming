@@ -34,6 +34,7 @@ public class PointLogic {
 
     private static boolean validate(BigDecimal x, BigDecimal y, BigDecimal r) {
         return x.compareTo(new BigDecimal("-4")) >= 0 && x.compareTo(new BigDecimal("4")) <= 0 &&
+                x.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) == 0 &&
                 r.compareTo(new BigDecimal("1")) >= 0 && r.compareTo(new BigDecimal("4")) <= 0 &&
                 y.compareTo(new BigDecimal("-3")) > 0 && y.compareTo(new BigDecimal("3")) < 0;
     }

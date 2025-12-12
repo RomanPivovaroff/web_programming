@@ -108,34 +108,10 @@ function createPoint(x, y, r, color) {
     point.setAttribute("cx", cx);
     point.setAttribute("cy", cy);
     point.setAttribute("r", "8");
-    point.setAttribute("class", r);
-    point.setAttribute("visibility", r == 4 ? "visible" : "hidden");
     point.setAttribute("fill", color);
     point.setAttribute("stroke", "white");
 
     svg.appendChild(point);
 }
 
-function reDrawChart() {
-    const r = getR();
-    if (!r) {
-        alert("Сначала выберите радиус R");
-        return;
-    }
-    if (!validateInput(0, 0, r)) {return;};
-    const svg = document.getElementById("canvas");
-    const points = svg.querySelectorAll("circle");
-
-    points.forEach(point => {
-        const pointR = point.getAttribute("class");
-        console.log(pointR, r)
-        if (Number(pointR) === Number(r)) {
-            point.setAttribute("visibility", "visible");
-        } else {
-            point.setAttribute("visibility", "hidden");
-        }
-    });
-    updateChartLabels(r);
-    return;
-}
 
