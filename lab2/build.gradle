@@ -1,0 +1,29 @@
+plugins {
+    id "java"
+    id "war"
+    id "checkstyle"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = "app"
+version = ""
+
+checkstyle {
+    toolVersion = "10.18.2"
+    configFile = file("checkstyle.xml")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly("jakarta.servlet:jakarta.servlet-api:5.0.0")
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
