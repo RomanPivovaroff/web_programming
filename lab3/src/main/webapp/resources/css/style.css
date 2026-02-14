@@ -126,6 +126,14 @@ main {
     background: linear-gradient(90deg, #0c2245, #39AAAA);
 }
 
+.section-title {
+    color: white;
+}
+
+.pagination-info {
+    color: white;
+}
+
 footer {
     background: linear-gradient(to bottom right, white, blue, red);
     padding: 20px;
