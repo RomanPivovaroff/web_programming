@@ -93,7 +93,10 @@ function handleCanvasClick(event) {
                     {name: 'canvasY', value: realY},
                     {name: 'canvasR', value: r}
                 ],
-                update: 'tableCheck historyMessage paginationInfo'
+                update: 'tableCheck historyMessage paginationInfo',
+                oncomplete: function() {
+                    redrawAllPoints();
+                }
             });
         }
     }

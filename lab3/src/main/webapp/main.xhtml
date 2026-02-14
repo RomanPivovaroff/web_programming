@@ -35,6 +35,17 @@
 </h:head>
 
 <h:body>
+    <h:outputScript>
+        if (typeof PrimeFaces !== 'undefined') {
+        PrimeFaces.on('ajaxComplete', function() {
+        setTimeout(function() {
+        if (typeof redrawAllPoints === 'function') {
+        redrawAllPoints();
+        }
+        }, 100);
+        });
+        }
+    </h:outputScript>
     <header>
         <h2 id="header-left">Лабораторная работа №3</h2>
         <h2 id="header-center">Веб-программирование</h2>
@@ -107,6 +118,7 @@
                         <h:inputText id="y" value="#{inputBean.y}"
                                      required="true"
                                      requiredMessage="Введите Y">
+                        <f:validateDoubleRange minimum="-3" maximum="3" />
                         </h:inputText>
                         <br/>
 
@@ -125,7 +137,7 @@
                                              styleClass="btn btn-primary btn-lg"
                                              disabled="#{inputBean.x == null}">
                                 <f:ajax execute="@form" render="tableCheck paginationInfo"
-                                        onevent="afterCheck" />
+                                        onevent="redrawAllPoints" />
                             </h:commandButton>
 
                             <h:commandButton id="resetButton" value="Сбросить"
@@ -138,8 +150,8 @@
                                              value=""
                                              action="#{inputBean.canvasCheck}"
                                              style="display:none;" >
-                            <f:ajax execute="@this" render="tableCheck paginationInfo"
-                                    onevent="afterCheck" />
+                                <f:ajax execute="@this" render="tableCheck paginationInfo"
+                                    onevent="redrawAllPoints" />
                             </h:commandButton>
                         </div>
                     </h:form>
@@ -177,7 +189,7 @@
                          var="attempt"
                          styleClass="table-check"
                          rowClasses="table-row-even, table-row-odd"
-                         rendered="#{not empty historyBean.history}">
+                         rendered="#{true}">
                 <h:column>
                     <f:facet name="header">X</f:facet>
                     #{attempt.x}

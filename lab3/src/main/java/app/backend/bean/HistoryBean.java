@@ -123,8 +123,10 @@ public class HistoryBean implements Serializable {
     }
 
     public void goToPage(int page) {
+        logger.info("gotopage");
         if (page >= 1 && page <= totalPages) {
             this.currentPage = page;
+            logger.info("gotopage" + page);
         }
     }
 
