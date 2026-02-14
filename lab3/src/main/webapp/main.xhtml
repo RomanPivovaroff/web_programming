@@ -107,7 +107,6 @@
                         <h:inputText id="y" value="#{inputBean.y}"
                                      required="true"
                                      requiredMessage="Введите Y">
-                        <f:validateDoubleRange minimum="-3" maximum="3" />
                         </h:inputText>
                         <br/>
 
@@ -126,7 +125,7 @@
                                              styleClass="btn btn-primary btn-lg"
                                              disabled="#{inputBean.x == null}">
                                 <f:ajax execute="@form" render="tableCheck paginationInfo"
-                                        onevent="redrawAllPoints" />
+                                        onevent="afterCheck" />
                             </h:commandButton>
 
                             <h:commandButton id="resetButton" value="Сбросить"
@@ -140,7 +139,7 @@
                                              action="#{inputBean.canvasCheck}"
                                              style="display:none;" >
                             <f:ajax execute="@this" render="tableCheck paginationInfo"
-                                    onevent="redrawAllPoints" />
+                                    onevent="afterCheck" />
                             </h:commandButton>
                         </div>
                     </h:form>

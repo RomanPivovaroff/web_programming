@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @Named
+@ViewScoped
 public class InputBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(InputBean.class.getName());

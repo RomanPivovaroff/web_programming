@@ -162,7 +162,6 @@ function createPoint(x, y, r, color) {
 }
 
 function afterCheck(data) {
-    alert(data)
     if (data.status === 'complete') {
         redrawAllPoints();
     }

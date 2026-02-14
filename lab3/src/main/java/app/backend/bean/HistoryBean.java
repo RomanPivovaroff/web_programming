@@ -106,7 +106,6 @@ public class HistoryBean implements Serializable {
         if (start >= history.size()) {
             return new ArrayList<>();
         }
-        logger.info("Добавлен новый результат:" + this.currentPage);
 
         return history.subList(start, end);
     }
