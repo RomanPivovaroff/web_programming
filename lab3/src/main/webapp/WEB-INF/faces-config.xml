@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="3.0" xmlns="https://jakarta.ee/xml/ns/jakartaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                                  https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd">
+
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>go-to-main</from-outcome>
+            <to-view-id>/main.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <managed-bean>
+        <managed-bean-name>historyBean</managed-bean-name>
+        <managed-bean-class>app.backend.bean.HistoryBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+
+        <managed-property>
+            <property-name>maxHistorySize</property-name>
+            <value>#{initParam['app.history.max.size']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>autoLoadHistory</property-name>
+            <value>#{initParam['app.history.auto.load']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>enablePagination</property-name>
+            <value>#{initParam['app.history.pagination.enabled']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>pageSize</property-name>
+            <value>#{initParam['app.history.page.size']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>historyService</property-name>
+            <value>#{historyService}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>historyService</managed-bean-name>
+        <managed-bean-class>app.backend.service.HistoryService</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+
+        <managed-property>
+            <property-name>pointLogicService</property-name>
+            <value>#{pointLogicService}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>pointLogicService</managed-bean-name>
+        <managed-bean-class>app.backend.service.PointLogicService</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+
+        <managed-property>
+            <property-name>xMin</property-name>
+            <value>#{initParam['app.validation.x.min']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>xMax</property-name>
+            <value>#{initParam['app.validation.x.max']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>yMin</property-name>
+            <value>#{initParam['app.validation.y.min']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>yMax</property-name>
+            <value>#{initParam['app.validation.y.max']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>rMin</property-name>
+            <value>#{initParam['app.validation.r.min']}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>rMax</property-name>
+            <value>#{initParam['app.validation.r.max']}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>inputBean</managed-bean-name>
+        <managed-bean-class>app.backend.bean.InputBean</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+
+        <managed-property>
+            <property-name>historyService</property-name>
+            <value>#{historyService}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>historyBean</property-name>
+            <value>#{historyBean}</value>
+        </managed-property>
+    </managed-bean>
+
+    <navigation-rule>
+        <from-view-id>/main.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&amp;display=swap&amp;subset=cyrillic"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300..800&amp;display=swap"
+          rel="stylesheet" />
+    <h:outputStylesheet name="css/style.css" />
+    <h:outputScript name="js/main.js" />
+    <style>
+        .background {
+            background-image: url("#{resource['images/russian_flag_fon.jpeg']}");
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 40px 0;
+            gap: 20px;
+        }
+    </style>
+    <title>Лабораторная работа №3</title>
+</h:head>
+
+<h:body>
+    <header>
+        <h2 id="header-left">Лабораторная работа №3</h2>
+        <h2 id="header-center">Веб-программирование</h2>
+        <h2 id="header-right">Пивоваров Роман Николаевич P3231</h2>
+    </header>
+    <main>
+        <div class="background">
+            <div class="chart">
+                <svg id="canvas" height="600" width="600" xmlns="http://www.w3.org/2000/svg" onclick="handleCanvasClick(event)">
+
+                    <line stroke="black" x1="0" x2="600" y1="300" y2="300"></line>
+                    <line stroke="black" x1="300" x2="300" y1="0" y2="600"></line>
+                    <polygon fill="black" points="300,0 288,30 312,30"></polygon>
+                    <polygon fill="black" points="600,300 570,312 570,288"></polygon>
+
+                    <line stroke="black" x1="425" x2="425" y1="310" y2="290"></line>
+                    <line stroke="black" x1="550" x2="550" y1="310" y2="290"></line>
+
+                    <line stroke="black" x1="50" x2="50" y1="310" y2="290"></line>
+                    <line stroke="black" x1="175" x2="175" y1="310" y2="290"></line>
+
+                    <line stroke="black" x1="290" x2="310" y1="175" y2="175"></line>
+                    <line stroke="black" x1="290" x2="310" y1="50" y2="50"></line>
+
+                    <line stroke="black" x1="290" x2="310" y1="425" y2="425"></line>
+                    <line stroke="black" x1="290" x2="310" y1="550" y2="550"></line>
+
+                    <text id = "r-half-x" x="420" y="280">2</text>
+                    <text id = "r-full-x" x="545" y="280">4</text>
+
+                    <text id = "r-half-neg-x" x="164" y="280">-2</text>
+                    <text id = "r-full-neg-x" x="60" y="280">-4</text>
+
+                    <text id = "r-half-y" x="320" y="180">2</text>
+                    <text id = "r-full-y" x="320" y="55">4</text>
+
+                    <text id = "r-half-neg-y" x="320" y="430">-2</text>
+                    <text id = "r-full-neg-y" x="320" y="555">-4</text>
+
+                    <text x="570" y="280">X</text>
+                    <text x="320" y="30">Y</text>
+
+
+                    <polygon points="300,300 425,300 300,550" fill-opacity="0.4" stroke="black" fill="blue"></polygon>
+
+                    <rect x="175" y="300" width="125" height="250" fill-opacity="0.4" stroke="black" fill="blue"></rect>
+
+                    <path d="M 300 300 L 300 175 A120,120 0 0,1 425,300 Z" fill-opacity="0.4" stroke="black" fill="blue"></path>
+
+                </svg>
+            </div>
+            <div class="input">
+                <div id="radius">
+
+                    <h:form id="inputForm" onsubmit="return validateUserInput()">
+
+                        <span>Координата X:</span>
+                        <div  class="x-buttons-container">
+                        <ui:repeat value="#{inputBean.xOptions}" var="xValue">
+                        <h:commandButton value="#{xValue}"
+                                         action="#{inputBean.setXValue(xValue)}"
+                                         styleClass="x-button #{inputBean.x eq xValue ? 'selected' : ''}"
+                                         immediate="true">
+                        </h:commandButton>
+                        </ui:repeat>
+                        </div>
+                        <br/>
+
+                        <span>Координата Y:</span>
+                        <h:inputText id="y" value="#{inputBean.y}"
+                                     required="true"
+                                     requiredMessage="Введите Y">
+                        <f:validateDoubleRange minimum="-3" maximum="3" />
+                        </h:inputText>
+                        <br/>
+
+                        <span>Параметр R:</span>
+                        <p:spinner id="radius" value="#{inputBean.r}"
+                                   min="1" max="3" stepFactor="0.5"
+                                   required="true" requiredMessage="Выберите радиус R"
+                                   styleClass="r-spinner">
+                            <f:ajax event="change" execute="@this" onevent="updateChartFromSpinner"/>
+                        </p:spinner>
+                        <br/>
+
+                        <div class="form-actions">
+                            <h:commandButton id="checkButton" value="Отправить"
+                                             action="#{inputBean.check}"
+                                             styleClass="btn btn-primary btn-lg"
+                                             disabled="#{inputBean.x == null}">
+                                <f:ajax execute="@form" render="tableCheck paginationInfo"
+                                        onevent="redrawAllPoints" />
+                            </h:commandButton>
+
+                            <h:commandButton id="resetButton" value="Сбросить"
+                                             action="#{inputBean.reset}"
+                                             immediate="true"
+                                             styleClass="btn btn-secondary">
+                                <f:ajax execute="@form" render="inputForm" />
+                            </h:commandButton>
+                            <h:commandButton id="canvasButton"
+                                             value=""
+                                             action="#{inputBean.canvasCheck}"
+                                             style="display:none;" >
+                            <f:ajax execute="@this" render="tableCheck paginationInfo"
+                                    onevent="redrawAllPoints" />
+                            </h:commandButton>
+                        </div>
+                    </h:form>
+
+                    <h:form>
+                        <h:commandButton value="Очистить историю"
+                                         action="#{historyBean.clearHistory}"
+                                         styleClass="btn btn-danger"
+                                         onclick="return confirm('Вы уверены, что хотите очистить всю историю?')">
+                            <f:ajax render="tableCheck historyMessage paginationInfo" />
+                        </h:commandButton>
+                    </h:form>
+
+                    <h:form>
+                        <h:commandButton value="На главную"
+                                         action="index"
+                                         styleClass="btn-back" />
+                    </h:form>
+
+                </div>
+            </div>
+        </div>
+        <div class="tableContainer">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i> История проверок
+            </h2>
+            <h:panelGroup id="historyMessage">
+                <h:outputText value="Нет результатов для отображения"
+                              rendered="#{empty historyBean.history}"
+                              styleClass="empty-history-message" />
+            </h:panelGroup>
+
+            <h:dataTable id="tableCheck"
+                         value="#{historyBean.pagedHistory}"
+                         var="attempt"
+                         styleClass="table-check"
+                         rowClasses="table-row-even, table-row-odd"
+                         rendered="#{not empty historyBean.history}">
+                <h:column>
+                    <f:facet name="header">X</f:facet>
+                    #{attempt.x}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Y</f:facet>
+                    #{attempt.y}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">R</f:facet>
+                    <span class="radius-badge">#{attempt.r}</span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Результат</f:facet>
+                    <span class="result-badge #{attempt.hit ? 'hit' : 'miss'}">
+                                    <i class="fas #{attempt.hit ? 'fa-check' : 'fa-times'}"></i>
+                                    #{attempt.hit ? 'Попадание' : 'Промах'}
+                                </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Время</f:facet>
+                    <span class="execution-time">
+                                    #{attempt.duration} нс
+                                </span>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Дата</f:facet>
+                    <h:outputText value="#{attempt.date}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" type="localDateTime"/>
+                    </h:outputText>
+                </h:column>
+            </h:dataTable>
+            <h:panelGroup id="paginationInfo"  rendered="#{historyBean.enablePagination and not empty historyBean.history}">
+                <div class="pagination">
+                    <h:commandButton value="←"
+                                     action="#{historyBean.previousPage}"
+                                     disabled="#{historyBean.currentPage == 1}"
+                                     styleClass="pagination-btn">
+                        <f:ajax render="tableCheck paginationInfo" />
+                    </h:commandButton>
+                    <ui:repeat value="#{historyBean.pages}" var="page">
+                        <h:commandButton value="#{page}"
+                                         action="#{historyBean.goToPage(page)}"
+                                         styleClass="pagination-btn #{historyBean.currentPage == page ? 'active' : ''}">
+                            <f:ajax render="tableCheck paginationInfo" />
+                        </h:commandButton>
+                    </ui:repeat>
+                    <h:commandButton value="→"
+                                     action="#{historyBean.nextPage}"
+                                     disabled="#{historyBean.currentPage == historyBean.totalPages}"
+                                     styleClass="pagination-btn">
+                        <f:ajax render="tableCheck paginationInfo" />
+                    </h:commandButton>
+
+                    <span class="pagination-info">
+                            #{historyBean.paginationInfo}
+                        </span>
+                </div>
+            </h:panelGroup>
+        </div>
+    </main>
+</h:body>
+</html>

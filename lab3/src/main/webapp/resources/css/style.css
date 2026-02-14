@@ -1,0 +1,135 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Russo One";
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh
+}
+
+header {
+    font-family: "Open Sans", cursive;
+    background: linear-gradient(white, blue, red);
+    padding: 15px 20px;
+    -webkit-text-stroke: 1px black;
+    -webkit-text-fill-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-left { text-align: left; }
+#header-center { text-align: center; }
+#header-right { text-align: right; }
+
+main {
+    padding-top: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.x-button, .btn-primary, .btn-secondary, .btn-danger, .pagination-btn, .btn-back {
+    border-radius: 8px;
+    background: linear-gradient(45deg, #49638c, #4287f5, #24406b);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.x-button:hover, .btn-primary:hover, .btn-secondary:hover, .btn-danger:hover, .pagination-btn:hover, .btn-back:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0c2245, #39AAAA);
+}
+
+.chart {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+}
+
+.input {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+}
+
+.table-check {
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-family: "Russo One";
+    border-collapse: collapse;
+}
+
+.table-check th,
+.table-check td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-check th {
+    background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97);
+    color: white;
+}
+
+.table-check tr {
+    background: linear-gradient(to bottom, #FFFFFF, #0039A6, #D52B1E);
+    color: white;
+}
+
+.pagination {
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.pagination-info {
+    margin-left: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.empty-history-message {
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-style: italic;
+}
+
+.x-button.selected {
+    background: #007bff;
+    color: white;
+}
+
+.tableContainer {
+    width: 100%;
+    padding: 40px 20px;
+    background: linear-gradient(90deg, #0c2245, #39AAAA);
+}
+
+footer {
+    background: linear-gradient(to bottom right, white, blue, red);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
