@@ -26,11 +26,7 @@ public class InputBean implements Serializable {
 
     private HistoryService historyService;
 
-    private HistoryBean historyBean;
-
-    public InputBean() {}
-
-    public String check() {
+    public void check() {
         logger.info("Обработка запроса: x=" + x + ", y=" + y + ", r=" + r);
 
         try {
@@ -42,19 +38,20 @@ public class InputBean implements Serializable {
             fromCanvas = false;
 
             addSuccessMessage("Проверка выполнена успешно");
-            return "success";
 
         } catch (IllegalArgumentException e) {
             logger.warning("Ошибка валидации: " + e.getMessage());
             addErrorMessage(e.getMessage());
-            return "error";
 
         } catch (Exception e) {
             logger.severe("Системная ошибка: " + e.getMessage());
             addErrorMessage("Системная ошибка");
-            return "error";
         }
     }
+
+    private HistoryBean historyBean;
+
+    public InputBean() {}
 
     public void handleCanvasClick(double canvasX, double canvasY, BigDecimal rValue) {
         logger.info("Canvas click: x=" + canvasX + ", y=" + canvasY + ", r=" + rValue);

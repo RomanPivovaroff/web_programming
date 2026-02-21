@@ -3,7 +3,6 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
                                   https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd">
-
     <navigation-rule>
         <from-view-id>/index.xhtml</from-view-id>
         <navigation-case>
@@ -13,6 +12,14 @@
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/main.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
     <managed-bean>
         <managed-bean-name>historyBean</managed-bean-name>
         <managed-bean-class>app.backend.bean.HistoryBean</managed-bean-class>
@@ -29,22 +36,12 @@
         </managed-property>
 
         <managed-property>
-            <property-name>enablePagination</property-name>
-            <value>#{initParam['app.history.pagination.enabled']}</value>
-        </managed-property>
-
-        <managed-property>
-            <property-name>pageSize</property-name>
-            <value>#{initParam['app.history.page.size']}</value>
-        </managed-property>
-
-        <managed-property>
             <property-name>historyService</property-name>
             <value>#{historyService}</value>
         </managed-property>
+
         <post-construct>init</post-construct>
     </managed-bean>
-
     <managed-bean>
         <managed-bean-name>historyService</managed-bean-name>
         <managed-bean-class>app.backend.service.HistoryService</managed-bean-class>
@@ -55,7 +52,6 @@
             <value>#{pointLogicService}</value>
         </managed-property>
     </managed-bean>
-
     <managed-bean>
         <managed-bean-name>pointLogicService</managed-bean-name>
         <managed-bean-class>app.backend.service.PointLogicService</managed-bean-class>
@@ -91,7 +87,6 @@
             <value>#{initParam['app.validation.r.max']}</value>
         </managed-property>
     </managed-bean>
-
     <managed-bean>
         <managed-bean-name>inputBean</managed-bean-name>
         <managed-bean-class>app.backend.bean.InputBean</managed-bean-class>
@@ -108,12 +103,4 @@
         </managed-property>
     </managed-bean>
 
-    <navigation-rule>
-        <from-view-id>/main.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>index</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 </faces-config>

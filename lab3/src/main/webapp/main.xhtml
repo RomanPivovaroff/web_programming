@@ -46,11 +46,13 @@
         });
         }
     </h:outputScript>
+
     <header>
         <h2 id="header-left">Лабораторная работа №3</h2>
         <h2 id="header-center">Веб-программирование</h2>
         <h2 id="header-right">Пивоваров Роман Николаевич P3231</h2>
     </header>
+
     <main>
         <div class="background">
             <div class="chart">
@@ -97,20 +99,18 @@
 
                 </svg>
             </div>
+
             <div class="input">
                 <div id="radius">
-
                     <h:form id="inputForm" onsubmit="return validateUserInput()">
-
                         <span>Координата X:</span>
-                        <div  class="x-buttons-container">
-                        <ui:repeat value="#{inputBean.xOptions}" var="xValue">
-                        <h:commandButton value="#{xValue}"
-                                         action="#{inputBean.setXValue(xValue)}"
-                                         styleClass="x-button #{inputBean.x eq xValue ? 'selected' : ''}"
-                                         immediate="true">
-                        </h:commandButton>
-                        </ui:repeat>
+                        <div class="x-buttons-container">
+                            <ui:repeat value="#{inputBean.xOptions}" var="xValue">
+                                <h:commandButton value="#{xValue}"
+                                                 action="#{inputBean.setXValue(xValue)}"
+                                                 styleClass="x-button #{inputBean.x eq xValue ? 'selected' : ''}"
+                                                 immediate="true" />
+                            </ui:repeat>
                         </div>
                         <br/>
 
@@ -118,7 +118,6 @@
                         <h:inputText id="y" value="#{inputBean.y}"
                                      required="true"
                                      requiredMessage="Введите Y">
-                        <f:validateDoubleRange minimum="-3" maximum="3" />
                         </h:inputText>
                         <br/>
 
@@ -136,32 +135,29 @@
                                              action="#{inputBean.check}"
                                              styleClass="btn btn-primary btn-lg"
                                              disabled="#{inputBean.x == null}">
-                                <f:ajax execute="@form" render="tableCheck paginationInfo"
+                                <f:ajax execute="@form" render="historyTable messages"
                                         onevent="redrawAllPoints" />
                             </h:commandButton>
 
-                            <h:commandButton id="resetButton" value="Сбросить"
-                                             action="#{inputBean.reset}"
-                                             immediate="true"
-                                             styleClass="btn btn-secondary">
-                                <f:ajax execute="@form" render="inputForm" />
-                            </h:commandButton>
-                            <h:commandButton id="canvasButton"
-                                             value=""
-                                             action="#{inputBean.canvasCheck}"
-                                             style="display:none;" >
-                                <f:ajax execute="@this" render="tableCheck paginationInfo"
-                                    onevent="redrawAllPoints" />
-                            </h:commandButton>
+                            <h:messages id="messages" globalOnly="true" layout="table"
+                                        styleClass="error-msg" showSummary="true" showDetail="true" />
                         </div>
                     </h:form>
-
+                    <h:form id="canvasForm" style="display:none;">
+                        <h:commandButton id="canvasButton"
+                                         value=""
+                                         action="#{inputBean.canvasCheck}"
+                                         style="display:none;">
+                            <f:ajax execute="@form" render="historyTable messages"
+                                    onevent="redrawAllPoints" />
+                        </h:commandButton>
+                    </h:form>
                     <h:form>
                         <h:commandButton value="Очистить историю"
                                          action="#{historyBean.clearHistory}"
                                          styleClass="btn btn-danger"
                                          onclick="return confirm('Вы уверены, что хотите очистить всю историю?')">
-                            <f:ajax render="tableCheck historyMessage paginationInfo" onevent="redrawAllPoints" />
+                            <f:ajax render="historyTable historyMessage messages" onevent="redrawAllPoints" />
                         </h:commandButton>
                     </h:form>
 
@@ -170,7 +166,6 @@
                                          action="index"
                                          styleClass="btn-back" />
                     </h:form>
-
                 </div>
             </div>
         </div>
@@ -178,77 +173,56 @@
             <h2 class="section-title">
                 <i class="fas fa-history"></i> История проверок
             </h2>
+
             <h:panelGroup id="historyMessage">
                 <h:outputText value="Нет результатов для отображения"
                               rendered="#{empty historyBean.history}"
                               styleClass="empty-history-message" />
             </h:panelGroup>
-
-            <h:dataTable id="tableCheck"
-                         value="#{historyBean.pagedHistory}"
+            <p:dataTable id="historyTable"
                          var="attempt"
-                         styleClass="table-check"
-                         rowClasses="table-row-even, table-row-odd"
-                         rendered="#{true}">
-                <h:column>
-                    <f:facet name="header">X</f:facet>
+                         value="#{historyBean.history}"
+                         paginator="true"
+                         rows="10"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+                         currentPageReportTemplate="Показано {startRecord}-{endRecord} из {totalRecords}"
+                         rowsPerPageTemplate="10,20,50"
+                         emptyMessage="Нет результатов"
+                         style="width:100%; margin-top:20px; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.15); font-family:'Russo One'; border-collapse:collapse;"
+                         rowStyle="background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 33%, #0039A6 33%, #0039A6 66%, #D52B1E 66%, #D52B1E 100%); color:white; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.5);"
+                         headerStyle="background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97); color:white; padding:12px 16px; text-align:center; font-size:85%; letter-spacing:0.5px; border:1px solid #ddd;">
+
+                <p:column headerText="X">
                     #{attempt.x}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Y</f:facet>
+                </p:column>
+
+                <p:column headerText="Y">
                     #{attempt.y}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">R</f:facet>
+                </p:column>
+
+                <p:column headerText="R">
                     <span class="radius-badge">#{attempt.r}</span>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Результат</f:facet>
+                </p:column>
+
+                <p:column headerText="Результат">
                     <span class="result-badge #{attempt.hit ? 'hit' : 'miss'}">
-                                    <i class="fas #{attempt.hit ? 'fa-check' : 'fa-times'}"></i>
-                                    #{attempt.hit ? 'Попадание' : 'Промах'}
-                                </span>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Время</f:facet>
-                    <span class="execution-time">
-                                    #{attempt.duration} нс
-                                </span>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Дата</f:facet>
+                        <i class="fas #{attempt.hit ? 'fa-check' : 'fa-times'}"></i>
+                        #{attempt.hit ? 'Попадание' : 'Промах'}
+                    </span>
+                </p:column>
+
+                <p:column headerText="Время">
+                    <span class="execution-time">#{attempt.duration} нс</span>
+                </p:column>
+
+                <p:column headerText="Дата">
                     <h:outputText value="#{attempt.date}">
                         <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" type="localDateTime"/>
                     </h:outputText>
-                </h:column>
-            </h:dataTable>
-            <h:panelGroup id="paginationInfo">
-                <div class="pagination">
-                    <h:commandButton value="←"
-                                     action="#{historyBean.previousPage}"
-                                     disabled="#{historyBean.currentPage == 1}"
-                                     styleClass="pagination-btn">
-                        <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
-                    </h:commandButton>
-                    <ui:repeat value="#{historyBean.pages}" var="page">
-                        <h:commandButton value="#{page}"
-                                         action="#{historyBean.goToPage(page)}"
-                                         styleClass="pagination-btn #{historyBean.currentPage == page ? 'active' : ''}">
-                            <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
-                        </h:commandButton>
-                    </ui:repeat>
-                    <h:commandButton value="→"
-                                     action="#{historyBean.nextPage}"
-                                     disabled="#{historyBean.currentPage == historyBean.totalPages}"
-                                     styleClass="pagination-btn">
-                        <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
-                    </h:commandButton>
+                </p:column>
+            </p:dataTable>
 
-                    <span class="pagination-info">
-                            #{historyBean.paginationInfo}
-                        </span>
-                </div>
-            </h:panelGroup>
         </div>
     </main>
 </h:body>

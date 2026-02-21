@@ -86,14 +86,14 @@ function handleCanvasClick(event) {
     if (validateInput(realX, realY, r)) {
         if (typeof PrimeFaces !== 'undefined') {
             PrimeFaces.ab({
-                source: 'inputForm:canvasButton',
+                source: 'canvasForm:canvasButton',
                 process: '@this',
                 params: [
                     {name: 'canvasX', value: realX},
                     {name: 'canvasY', value: realY},
                     {name: 'canvasR', value: r}
                 ],
-                update: 'tableCheck historyMessage paginationInfo',
+                update: 'historyTable messages',
                 oncomplete: function() {
                     redrawAllPoints();
                 }
@@ -101,7 +101,6 @@ function handleCanvasClick(event) {
         }
     }
 }
-
 function updateChartFromSpinner(data) {
     if (data.status === 'success') {
         const r = getR();
@@ -131,7 +130,9 @@ function redrawAllPoints() {
     oldPoints.forEach(p => p.remove());
     const r = getR();
     if (!r) return;
-    const table = document.getElementById('tableCheck');
+
+    const table = document.getElementById('historyTable');
+
     if (!table) return;
 
     const rows = table.querySelectorAll('tr:not(.table-header)');
@@ -163,7 +164,6 @@ function createPoint(x, y, r, color) {
 
     svg.appendChild(point);
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {

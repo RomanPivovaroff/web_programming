@@ -15,21 +15,16 @@ public class HistoryBean implements Serializable {
 
     private int maxHistorySize = 100;
     private boolean autoLoadHistory = true;
-    private boolean enablePagination = true;
-    private int pageSize = 20;
 
     private HistoryService historyService;
 
     private List<AreaCheckResponse> history;
-    private int currentPage = 1;
-    private int totalPages = 1;
 
     public HistoryBean() {
         history = new ArrayList<>();
     }
 
     public void init() {
-
         if (autoLoadHistory) {
             loadHistory();
         }
@@ -45,7 +40,7 @@ public class HistoryBean implements Serializable {
                 history = new ArrayList<>(allAttempts);
             }
 
-            calculatePagination();
+            logger.info("Загружено " + history.size() + " записей истории");
 
         } catch (Exception e) {
             logger.severe("Ошибка при загрузке истории: " + e.getMessage());
@@ -65,8 +60,6 @@ public class HistoryBean implements Serializable {
             history = new ArrayList<>(history.subList(0, maxHistorySize));
         }
 
-        calculatePagination();
-
         logger.info("Добавлен новый результат: " + response);
     }
 
@@ -74,9 +67,6 @@ public class HistoryBean implements Serializable {
         try {
             historyService.clearHistory();
             history.clear();
-            currentPage = 1;
-            totalPages = 1;
-
             addSuccessMessage("История очищена");
 
         } catch (Exception e) {
@@ -85,118 +75,8 @@ public class HistoryBean implements Serializable {
         }
     }
 
-    public List<AreaCheckResponse> getPagedHistory() {
-        if (!enablePagination || pageSize <= 0) {
-            return history;
-        }
-
-        int start = (currentPage - 1) * pageSize;
-        int end = Math.min(start + pageSize, history.size());
-
-        if (start >= history.size()) {
-            return new ArrayList<>();
-        }
-
-        return history.subList(start, end);
-    }
-
-    public void nextPage() {
-        if (currentPage < totalPages) {
-            this.currentPage++;
-        }
-    }
-
-    public void previousPage() {
-        if (currentPage > 1) {
-            this.currentPage--;
-        }
-    }
-
-    public void goToPage(int page) {
-        logger.info("gotopage");
-        if (page >= 1 && page <= totalPages) {
-            this.currentPage = page;
-            logger.info("gotopage" + page);
-        }
-    }
-
-    private void calculatePagination() {
-        if (!enablePagination || pageSize <= 0) {
-            totalPages = 1;
-            return;
-        }
-
-        totalPages = (int) Math.ceil((double) history.size() / pageSize);
-        if (totalPages < 1) {
-            totalPages = 1;
-        }
-
-        if (currentPage > totalPages) {
-            currentPage = totalPages;
-        }
-        if (currentPage < 1) {
-            currentPage = 1;
-        }
-    }
-
-    private void addSuccessMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
-    }
-
-    private void addErrorMessage(String message) {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
-    }
-
-    public int getMaxHistorySize() {
-        return maxHistorySize;
-    }
-
-    public void setMaxHistorySize(int maxHistorySize) {
-        this.maxHistorySize = maxHistorySize;
-    }
-
-    public boolean isAutoLoadHistory() {
-        return autoLoadHistory;
-    }
-
-    public void setAutoLoadHistory(boolean autoLoadHistory) {
-        this.autoLoadHistory = autoLoadHistory;
-    }
-
-    public boolean isEnablePagination() {
-        return enablePagination;
-    }
-
-    public void setEnablePagination(boolean enablePagination) {
-        this.enablePagination = enablePagination;
-        calculatePagination();
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-        calculatePagination();
-    }
-
-
-    public HistoryService getHistoryService() {
-        return historyService;
-    }
-
-    public void setHistoryService(HistoryService historyService) {
-        this.historyService = historyService;
-    }
-
     public List<AreaCheckResponse> getHistory() {
-        if (enablePagination) {
-            return getPagedHistory();
-        }
-        return history;
+        return history;  // Просто возвращаем весь список
     }
 
     public boolean isEmpty() {
@@ -207,42 +87,25 @@ public class HistoryBean implements Serializable {
         return history.size();
     }
 
-    public int getCurrentPage() {
-        return currentPage;
+    // Геттеры и сеттеры
+    public int getMaxHistorySize() { return maxHistorySize; }
+    public void setMaxHistorySize(int maxHistorySize) { this.maxHistorySize = maxHistorySize; }
+
+    public boolean isAutoLoadHistory() { return autoLoadHistory; }
+    public void setAutoLoadHistory(boolean autoLoadHistory) { this.autoLoadHistory = autoLoadHistory; }
+
+    public HistoryService getHistoryService() { return historyService; }
+    public void setHistoryService(HistoryService historyService) {
+        this.historyService = historyService;
     }
 
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
+    private void addSuccessMessage(String message) {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
     }
 
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    public String getPaginationInfo() {
-        if (!enablePagination || pageSize <= 0) {
-            return "Всего записей: " + history.size();
-        }
-
-        int start = (currentPage - 1) * pageSize + 1;
-        int end = Math.min(currentPage * pageSize, history.size());
-
-        return "Показано " + start + "-" + end + " из " + history.size() + " записей";
-    }
-    public List<Integer> getPages() {
-        List<Integer> pages = new ArrayList<>();
-
-        if (totalPages <= 1) {
-            return pages;
-        }
-
-        int start = Math.max(1, currentPage - 2);
-        int end = Math.min(totalPages, currentPage + 2);
-
-        for (int i = start; i <= end; i++) {
-            pages.add(i);
-        }
-
-        return pages;
+    private void addErrorMessage(String message) {
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
     }
 }
