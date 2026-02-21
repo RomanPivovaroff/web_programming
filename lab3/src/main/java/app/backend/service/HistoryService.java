@@ -3,41 +3,44 @@ package app.backend.service;
 import app.backend.dto.AreaCheckResponse;
 import app.backend.entity.AttemptEntity;
 import app.backend.exception.InvalidPointDataException;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+import jakarta.transaction.UserTransaction;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Named
-@ApplicationScoped
-@Transactional
 public class HistoryService {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Inject
-    private PointLogicService pointLogicService;
+    @Resource
+    private UserTransaction userTransaction;
 
+    private PointLogicService pointLogicService;
 
     public AreaCheckResponse saveAttempt(BigDecimal x, BigDecimal y, BigDecimal r,
                                          boolean isCanvas) {
         try {
-            AreaCheckResponse response = pointLogicService.createResponse(x, y, r, isCanvas);
+            userTransaction.begin();
 
+            AreaCheckResponse response = pointLogicService.createResponse(x, y, r, isCanvas);
             AttemptEntity entity = convertToEntity(response);
             entityManager.persist(entity);
             entityManager.flush();
 
+            userTransaction.commit();
             return response;
 
         } catch (InvalidPointDataException e) {
+            try { userTransaction.rollback(); } catch (Exception ex) {}
             throw new IllegalArgumentException(e.getMessage(), e);
+        } catch (Exception e) {
+            try { userTransaction.rollback(); } catch (Exception ex) {}
+            throw new RuntimeException(e);
         }
     }
 
@@ -65,9 +68,15 @@ public class HistoryService {
                 .collect(Collectors.toList());
     }
 
-
     public void clearHistory() {
-        entityManager.createQuery("DELETE FROM AttemptEntity").executeUpdate();
+        try {
+            userTransaction.begin();
+            entityManager.createQuery("DELETE FROM AttemptEntity").executeUpdate();
+            userTransaction.commit();
+        } catch (Exception e) {
+            try { userTransaction.rollback(); } catch (Exception ex) {}
+            throw new RuntimeException(e);
+        }
     }
 
     private AttemptEntity convertToEntity(AreaCheckResponse dto) {
@@ -89,5 +98,9 @@ public class HistoryService {
                 entity.getDuration(),
                 entity.getCreatedAt()
         );
+    }
+
+    public void setPointLogicService(PointLogicService pointLogicService) {
+        this.pointLogicService = pointLogicService;
     }
 }

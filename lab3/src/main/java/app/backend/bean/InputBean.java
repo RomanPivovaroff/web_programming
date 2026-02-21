@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@Named
-@ViewScoped
 public class InputBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(InputBean.class.getName());
@@ -26,10 +24,8 @@ public class InputBean implements Serializable {
     private BigDecimal r = new BigDecimal("3");
     private boolean fromCanvas = false;
 
-    @Inject
     private HistoryService historyService;
 
-    @Inject
     private HistoryBean historyBean;
 
     public InputBean() {}
@@ -104,6 +100,11 @@ public class InputBean implements Serializable {
     public HistoryService getHistoryService() { return historyService; }
     public void setHistoryService(HistoryService historyService) {
         this.historyService = historyService;
+    }
+
+    public HistoryBean getHistoryBean() { return historyBean; }
+    public void setHistoryBean(HistoryBean historyBean) {
+        this.historyBean = historyBean;
     }
 
     public String getXAsString() {

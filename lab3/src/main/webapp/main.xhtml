@@ -89,11 +89,11 @@
                     <text x="320" y="30">Y</text>
 
 
-                    <polygon points="300,300 425,300 300,550" fill-opacity="0.4" stroke="black" fill="blue"></polygon>
+                    <polygon points="300,300 550,300 300,175" fill-opacity="0.4" stroke="black" fill="blue"></polygon>
 
-                    <rect x="175" y="300" width="125" height="250" fill-opacity="0.4" stroke="black" fill="blue"></rect>
+                    <rect x="50" y="300" width="250" height="250" fill-opacity="0.4" stroke="black" fill="blue"></rect>
 
-                    <path d="M 300 300 L 300 175 A120,120 0 0,1 425,300 Z" fill-opacity="0.4" stroke="black" fill="blue"></path>
+                    <path d="M 300 300 L 300 175 A120,120 0 0,0 175,300 Z" fill-opacity="0.4" stroke="black" fill="blue"></path>
 
                 </svg>
             </div>
@@ -161,7 +161,7 @@
                                          action="#{historyBean.clearHistory}"
                                          styleClass="btn btn-danger"
                                          onclick="return confirm('Вы уверены, что хотите очистить всю историю?')">
-                            <f:ajax render="tableCheck historyMessage paginationInfo" />
+                            <f:ajax render="tableCheck historyMessage paginationInfo" onevent="redrawAllPoints" />
                         </h:commandButton>
                     </h:form>
 
@@ -222,26 +222,26 @@
                     </h:outputText>
                 </h:column>
             </h:dataTable>
-            <h:panelGroup id="paginationInfo"  rendered="#{historyBean.enablePagination and not empty historyBean.history}">
+            <h:panelGroup id="paginationInfo">
                 <div class="pagination">
                     <h:commandButton value="←"
                                      action="#{historyBean.previousPage}"
                                      disabled="#{historyBean.currentPage == 1}"
                                      styleClass="pagination-btn">
-                        <f:ajax render="tableCheck paginationInfo" />
+                        <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
                     </h:commandButton>
                     <ui:repeat value="#{historyBean.pages}" var="page">
                         <h:commandButton value="#{page}"
                                          action="#{historyBean.goToPage(page)}"
                                          styleClass="pagination-btn #{historyBean.currentPage == page ? 'active' : ''}">
-                            <f:ajax render="tableCheck paginationInfo" />
+                            <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
                         </h:commandButton>
                     </ui:repeat>
                     <h:commandButton value="→"
                                      action="#{historyBean.nextPage}"
                                      disabled="#{historyBean.currentPage == historyBean.totalPages}"
                                      styleClass="pagination-btn">
-                        <f:ajax render="tableCheck paginationInfo" />
+                        <f:ajax render="tableCheck paginationInfo" onevent="redrawAllPoints" />
                     </h:commandButton>
 
                     <span class="pagination-info">

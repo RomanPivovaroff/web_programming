@@ -2,18 +2,13 @@ package app.backend.bean;
 
 import app.backend.dto.AreaCheckResponse;
 import app.backend.service.HistoryService;
-import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Named
 public class HistoryBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(HistoryBean.class.getName());
@@ -23,7 +18,6 @@ public class HistoryBean implements Serializable {
     private boolean enablePagination = true;
     private int pageSize = 20;
 
-    @Inject
     private HistoryService historyService;
 
     private List<AreaCheckResponse> history;
@@ -34,7 +28,6 @@ public class HistoryBean implements Serializable {
         history = new ArrayList<>();
     }
 
-    @PostConstruct
     public void init() {
 
         if (autoLoadHistory) {
@@ -77,7 +70,7 @@ public class HistoryBean implements Serializable {
         logger.info("Добавлен новый результат: " + response);
     }
 
-    public String clearHistory() {
+    public void clearHistory() {
         try {
             historyService.clearHistory();
             history.clear();
@@ -86,12 +79,9 @@ public class HistoryBean implements Serializable {
 
             addSuccessMessage("История очищена");
 
-            return "index";
-
         } catch (Exception e) {
             logger.severe("Ошибка при очистке истории: " + e.getMessage());
             addErrorMessage("Ошибка при очистке истории");
-            return null;
         }
     }
 

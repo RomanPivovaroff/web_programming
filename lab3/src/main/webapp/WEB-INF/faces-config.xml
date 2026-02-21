@@ -9,6 +9,7 @@
         <navigation-case>
             <from-outcome>go-to-main</from-outcome>
             <to-view-id>/main.xhtml</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -41,6 +42,7 @@
             <property-name>historyService</property-name>
             <value>#{historyService}</value>
         </managed-property>
+        <post-construct>init</post-construct>
     </managed-bean>
 
     <managed-bean>

@@ -65,7 +65,7 @@
 
     <context-param>
         <param-name>app.history.page.size</param-name>
-        <param-value>20</param-value>
+        <param-value>10</param-value>
     </context-param>
 
 

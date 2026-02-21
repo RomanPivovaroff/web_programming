@@ -24,7 +24,7 @@ function getR() {
         console.error("Спиннер не найден! Проверьте селектор");
         return null;
     }
-    const val = parseFloat(spinner.value);
+    const val = parseFloat(spinner.getAttribute('aria-valuenow'));
     return isNaN(val) ? null : val;
 }
 
@@ -113,15 +113,15 @@ function updateChartFromSpinner(data) {
 }
 
 function updateChartLabels(R) {
-    const half = (R/2).toFixed(1);
+    const half = (R/2).toString();
     document.getElementById('r-half-x').textContent = half;
     document.getElementById('r-full-x').textContent = R.toString();
     document.getElementById('r-full-neg-x').textContent = (-R).toString();
-    document.getElementById('r-half-neg-x').textContent = (-R/2).toFixed(1);
+    document.getElementById('r-half-neg-x').textContent = (-R/2).toString();
 
     document.getElementById('r-half-y').textContent = half;
     document.getElementById('r-full-y').textContent = R.toString();
-    document.getElementById('r-half-neg-y').textContent = (-R/2).toFixed(1);
+    document.getElementById('r-half-neg-y').textContent = (-R/2).toString();
     document.getElementById('r-full-neg-y').textContent = (-R).toString();
 }
 
@@ -162,12 +162,6 @@ function createPoint(x, y, r, color) {
     point.setAttribute("class", "dynamic-point");
 
     svg.appendChild(point);
-}
-
-function afterCheck(data) {
-    if (data.status === 'complete') {
-        redrawAllPoints();
-    }
 }
 
 

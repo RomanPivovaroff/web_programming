@@ -2,14 +2,10 @@ package app.backend.service;
 
 import app.backend.dto.AreaCheckResponse;
 import app.backend.exception.InvalidPointDataException;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@Named
-@ApplicationScoped
 public class PointLogicService {
 
     private BigDecimal xMin = new BigDecimal("-5");
@@ -21,26 +17,25 @@ public class PointLogicService {
 
     public boolean checkHit(BigDecimal x, BigDecimal y, BigDecimal r) {
         // четверть круга
-        if (x.compareTo(BigDecimal.ZERO) >= 0 && y.compareTo(BigDecimal.ZERO) >= 0) {
-            BigDecimal xSquared = x.multiply(x);
-            BigDecimal ySquared = y.multiply(y);
-            BigDecimal rSquared = r.multiply(r).divide(new BigDecimal(4), RoundingMode.HALF_UP);
-            return xSquared.add(ySquared).compareTo(rSquared) <= 0;
+        if (x.compareTo(BigDecimal.ZERO) <= 0 && y.compareTo(BigDecimal.ZERO) >= 0) {
+            BigDecimal sumSquares = x.multiply(x).add(y.multiply(y));
+            BigDecimal left = sumSquares.multiply(new BigDecimal("4"));
+            BigDecimal right = r.multiply(r);
+
+            return left.compareTo(right) <= 0;
         }
 
         // прямоугольник
         if (x.compareTo(BigDecimal.ZERO) <= 0 && y.compareTo(BigDecimal.ZERO) <= 0) {
-            BigDecimal halfR = r.divide(new BigDecimal(2), RoundingMode.HALF_UP);
             BigDecimal negativeR = r.negate();
-            return x.compareTo(halfR.negate()) >= 0 && y.compareTo(negativeR) >= 0;
+            return x.compareTo(negativeR) >= 0 && y.compareTo(negativeR) >= 0;
         }
 
         // треугольник
-        if (x.compareTo(BigDecimal.ZERO) >= 0 && y.compareTo(BigDecimal.ZERO) <= 0) {
+        if (x.compareTo(BigDecimal.ZERO) >= 0 && y.compareTo(BigDecimal.ZERO) >= 0) {
             BigDecimal halfR = r.divide(new BigDecimal(2), RoundingMode.HALF_UP);
-            BigDecimal rightSideOfHypotenuse = x.multiply(new BigDecimal(2)).subtract(r);
-            return (x.compareTo(halfR) <= 0 && y.compareTo(r.negate()) >= 0)
-                    && (y.compareTo(rightSideOfHypotenuse) >= 0);
+            BigDecimal rightSideOfHypotenuse = halfR.subtract(x.multiply(halfR).divide(r, RoundingMode.HALF_UP));
+            return x.compareTo(r) <= 0 && y.compareTo(rightSideOfHypotenuse) <= 0;
         }
 
         return false;
@@ -81,21 +76,21 @@ public class PointLogicService {
         return new AreaCheckResponse(x, y, r, hit, duration);
     }
 
-    public BigDecimal getXMin() { return xMin; }
-    public void setXMin(BigDecimal xMin) { this.xMin = xMin; }
+    public BigDecimal getxMin() { return xMin; }
+    public void setxMin(BigDecimal xMin) { this.xMin = xMin; }
 
-    public BigDecimal getXMax() { return xMax; }
-    public void setXMax(BigDecimal xMax) { this.xMax = xMax; }
+    public BigDecimal getxMax() { return xMax; }
+    public void setxMax(BigDecimal xMax) { this.xMax = xMax; }
 
-    public BigDecimal getYMin() { return yMin; }
-    public void setYMin(BigDecimal yMin) { this.yMin = yMin; }
+    public BigDecimal getyMin() { return yMin; }
+    public void setyMin(BigDecimal yMin) { this.yMin = yMin; }
 
-    public BigDecimal getYMax() { return yMax; }
-    public void setYMax(BigDecimal yMax) { this.yMax = yMax; }
+    public BigDecimal getyMax() { return yMax; }
+    public void setyMax(BigDecimal yMax) { this.yMax = yMax; }
 
-    public BigDecimal getRMin() { return rMin; }
-    public void setRMin(BigDecimal rMin) { this.rMin = rMin; }
+    public BigDecimal getrMin() { return rMin; }
+    public void setrMin(BigDecimal rMin) { this.rMin = rMin; }
 
-    public BigDecimal getRMax() { return rMax; }
-    public void setRMax(BigDecimal rMax) { this.rMax = rMax; }
+    public BigDecimal getrMax() { return rMax; }
+    public void setrMax(BigDecimal rMax) { this.rMax = rMax; }
 }

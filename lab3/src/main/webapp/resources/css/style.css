@@ -123,7 +123,6 @@ main {
 .tableContainer {
     width: 100%;
     padding: 40px 20px;
-    background: linear-gradient(90deg, #0c2245, #39AAAA);
 }
 
 .section-title {
@@ -131,7 +130,7 @@ main {
 }
 
 .pagination-info {
-    color: white;
+    color: black;
 }
 
 footer {
