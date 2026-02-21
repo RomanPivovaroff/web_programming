@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&amp;display=swap&amp;subset=cyrillic"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300..800&amp;display=swap"
+          rel="stylesheet" />
+    <h:outputStylesheet name="css/style.css" />
+    <h:outputScript name="js/main.js" />
+    <style>
+        .background {
+            background-image: url("#{resource['images/russian_flag_fon.jpeg']}");
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+            padding: 40px 0;
+            gap: 20px;
+        }
+    </style>
+    <title>Лабораторная работа №3</title>
+</h:head>
+
+<h:body>
+    <h:outputScript>
+        if (typeof PrimeFaces !== 'undefined') {
+        PrimeFaces.on('ajaxComplete', function() {
+        setTimeout(function() {
+        if (typeof redrawAllPoints === 'function') {
+        redrawAllPoints();
+        }
+        }, 100);
+        });
+        }
+    </h:outputScript>
+
+    <header>
+        <h2 id="header-left">Лабораторная работа №3</h2>
+        <h2 id="header-center">Веб-программирование</h2>
+        <h2 id="header-right">Пивоваров Роман Николаевич P3231</h2>
+    </header>
+
+    <main>
+        <div class="background">
+            <div class="chart">
+                <svg id="canvas" height="600" width="600" xmlns="http://www.w3.org/2000/svg" onclick="handleCanvasClick(event)">
+
+                    <line stroke="black" x1="0" x2="600" y1="300" y2="300"></line>
+                    <line stroke="black" x1="300" x2="300" y1="0" y2="600"></line>
+                    <polygon fill="black" points="300,0 288,30 312,30"></polygon>
+                    <polygon fill="black" points="600,300 570,312 570,288"></polygon>
+
+                    <line stroke="black" x1="425" x2="425" y1="310" y2="290"></line>
+                    <line stroke="black" x1="550" x2="550" y1="310" y2="290"></line>
+
+                    <line stroke="black" x1="50" x2="50" y1="310" y2="290"></line>
+                    <line stroke="black" x1="175" x2="175" y1="310" y2="290"></line>
+
+                    <line stroke="black" x1="290" x2="310" y1="175" y2="175"></line>
+                    <line stroke="black" x1="290" x2="310" y1="50" y2="50"></line>
+
+                    <line stroke="black" x1="290" x2="310" y1="425" y2="425"></line>
+                    <line stroke="black" x1="290" x2="310" y1="550" y2="550"></line>
+
+                    <text id = "r-half-x" x="420" y="280">2</text>
+                    <text id = "r-full-x" x="545" y="280">4</text>
+
+                    <text id = "r-half-neg-x" x="164" y="280">-2</text>
+                    <text id = "r-full-neg-x" x="60" y="280">-4</text>
+
+                    <text id = "r-half-y" x="320" y="180">2</text>
+                    <text id = "r-full-y" x="320" y="55">4</text>
+
+                    <text id = "r-half-neg-y" x="320" y="430">-2</text>
+                    <text id = "r-full-neg-y" x="320" y="555">-4</text>
+
+                    <text x="570" y="280">X</text>
+                    <text x="320" y="30">Y</text>
+
+
+                    <polygon points="300,300 550,300 300,175" fill-opacity="0.4" stroke="black" fill="blue"></polygon>
+
+                    <rect x="50" y="300" width="250" height="250" fill-opacity="0.4" stroke="black" fill="blue"></rect>
+
+                    <path d="M 300 300 L 300 175 A120,120 0 0,0 175,300 Z" fill-opacity="0.4" stroke="black" fill="blue"></path>
+
+                </svg>
+            </div>
+
+            <div class="input">
+                <div id="radius">
+                    <h:form id="inputForm" onsubmit="return validateUserInput()">
+                        <span>Координата X:</span>
+                        <div class="x-buttons-container">
+                            <ui:repeat value="#{inputBean.xOptions}" var="xValue">
+                                <h:commandButton value="#{xValue}"
+                                                 action="#{inputBean.setXValue(xValue)}"
+                                                 styleClass="x-button #{inputBean.x eq xValue ? 'selected' : ''}"
+                                                 immediate="true" />
+                            </ui:repeat>
+                        </div>
+                        <br/>
+
+                        <span>Координата Y:</span>
+                        <h:inputText id="y" value="#{inputBean.y}"
+                                     required="true"
+                                     requiredMessage="Введите Y">
+                        </h:inputText>
+                        <br/>
+
+                        <span>Параметр R:</span>
+                        <p:spinner id="radius" value="#{inputBean.r}"
+                                   min="1" max="3" stepFactor="0.5"
+                                   required="true" requiredMessage="Выберите радиус R"
+                                   styleClass="r-spinner">
+                            <f:ajax event="change" execute="@this" onevent="updateChartFromSpinner"/>
+                        </p:spinner>
+                        <br/>
+
+                        <div class="form-actions">
+                            <h:commandButton id="checkButton" value="Отправить"
+                                             action="#{inputBean.check}"
+                                             styleClass="btn btn-primary btn-lg"
+                                             disabled="#{inputBean.x == null}">
+                                <f:ajax execute="@form" render="historyTable messages"
+                                        onevent="redrawAllPoints" />
+                            </h:commandButton>
+
+                            <h:messages id="messages" globalOnly="true" layout="table"
+                                        styleClass="error-msg" showSummary="true" showDetail="true" />
+                        </div>
+                    </h:form>
+                    <h:form id="canvasForm" style="display:none;">
+                        <h:commandButton id="canvasButton"
+                                         value=""
+                                         action="#{inputBean.canvasCheck}"
+                                         style="display:none;">
+                            <f:ajax execute="@form" render="historyTable messages"
+                                    onevent="redrawAllPoints" />
+                        </h:commandButton>
+                    </h:form>
+                    <h:form>
+                        <h:commandButton value="Очистить историю"
+                                         action="#{historyBean.clearHistory}"
+                                         styleClass="btn btn-danger"
+                                         onclick="return confirm('Вы уверены, что хотите очистить всю историю?')">
+                            <f:ajax render="historyTable historyMessage messages" onevent="redrawAllPoints" />
+                        </h:commandButton>
+                    </h:form>
+
+                    <h:form>
+                        <h:commandButton value="На главную"
+                                         action="index"
+                                         styleClass="btn-back" />
+                    </h:form>
+                </div>
+            </div>
+        </div>
+        <div class="tableContainer">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i> История проверок
+            </h2>
+
+            <h:panelGroup id="historyMessage">
+                <h:outputText value="Нет результатов для отображения"
+                              rendered="#{empty historyBean.history}"
+                              styleClass="empty-history-message" />
+            </h:panelGroup>
+            <p:dataTable id="historyTable"
+                         var="attempt"
+                         value="#{historyBean.history}"
+                         paginator="true"
+                         rows="10"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {CurrentPageReport}"
+                         currentPageReportTemplate="Показано {startRecord}-{endRecord} из {totalRecords}"
+                         rowsPerPageTemplate="10,20,50"
+                         emptyMessage="Нет результатов"
+                         style="width:100%; margin-top:20px; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.15); font-family:'Russo One'; border-collapse:collapse;"
+                         rowStyle="background: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 33%, #0039A6 33%, #0039A6 66%, #D52B1E 66%, #D52B1E 100%); color:white; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.5);"
+                         headerStyle="background: linear-gradient(to right, #bfcbde, #4e5ced, #cf8f97); color:white; padding:12px 16px; text-align:center; font-size:85%; letter-spacing:0.5px; border:1px solid #ddd;">
+
+                <p:column headerText="X">
+                    #{attempt.x}
+                </p:column>
+
+                <p:column headerText="Y">
+                    #{attempt.y}
+                </p:column>
+
+                <p:column headerText="R">
+                    <span class="radius-badge">#{attempt.r}</span>
+                </p:column>
+
+                <p:column headerText="Результат">
+                    <span class="result-badge #{attempt.hit ? 'hit' : 'miss'}">
+                        <i class="fas #{attempt.hit ? 'fa-check' : 'fa-times'}"></i>
+                        #{attempt.hit ? 'Попадание' : 'Промах'}
+                    </span>
+                </p:column>
+
+                <p:column headerText="Время">
+                    <span class="execution-time">#{attempt.duration} нс</span>
+                </p:column>
+
+                <p:column headerText="Дата">
+                    <h:outputText value="#{attempt.date}">
+                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" type="localDateTime"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
+        </div>
+    </main>
+</h:body>
+</html>

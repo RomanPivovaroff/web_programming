@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&amp;display=swap&amp;subset=cyrillic" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300..800&amp;display=swap" rel="stylesheet" />
+    <h:outputStylesheet name="css/style.css" />
+    <h:outputScript name="js/main.js" />
+
+    <style>
+        .backgroundResult {
+            background-image: url("#{resource['images/russian_flag_fon.jpeg']}");
+            background-size: 100% 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 0;
+            min-height: 80vh;
+        }
+
+        #time {
+            font-family: 'Courier New', monospace;
+            background: #1a237e;
+            border: 4px solid white;
+            border-radius: 20px;
+            padding: 40px 80px;
+            display: inline-block;
+            font-size: 80px;
+            font-weight: bold;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin: 30px 0;
+        }
+
+        #time span {
+            color: white;
+            font-size: 80px;
+        }
+
+        .mainButton {
+            font-size: 40px;
+            padding: 30px 80px;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            border: 3px solid white;
+            border-radius: 70px;
+            cursor: pointer;
+            font-family: 'Russo One', sans-serif;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            transition: 0.3s;
+            width: auto;
+            min-width: 400px;
+        }
+
+        .mainButton:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #FF8E8E, #6ED4CB);
+        }
+
+        .buttons-container {
+            text-align: center;
+            margin-top: auto;
+            padding-bottom: 50px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <header>
+        <h2 id="header-left">Лабораторная работа №3</h2>
+        <h2 id="header-center">Веб-программирование</h2>
+        <h2 id="header-right">Пивоваров Роман Николаевич P3231</h2>
+    </header>
+
+    <div class="backgroundResult">
+        <div id="time">
+            <h:outputText id="hourComponent" value="00" />
+            <span> : </span>
+            <h:outputText id="minuteComponent" value="00" />
+            <span> : </span>
+            <h:outputText id="secondComponent" value="00" />
+        </div>
+
+        <h:form id="form" styleClass="buttons-container">
+            <h:commandButton value="Главная" styleClass="mainButton" action="go-to-main" id="go-to-main-button"/>
+        </h:form>
+    </div>
+
+    <h:outputScript name="js/clock.js" />
+</h:body>
+</html>
